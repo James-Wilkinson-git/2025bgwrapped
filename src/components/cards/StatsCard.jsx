@@ -21,26 +21,18 @@ function StatsCard({ username, stats }) {
             <div className="stat-label">Unique Games</div>
           </div>
 
-          {stats.boardGamerAge !== null &&
-            stats.boardGamerAge !== undefined && (
+          {stats.averageGameAge !== null &&
+            stats.averageGameAge !== undefined && (
               <div className="stat-item large">
-                {stats.boardGamerAge === 0 ? (
-                  <>
-                    <div className="stat-value">🔥</div>
-                    <div className="stat-label">Hot Off the Press</div>
-                    <div className="stat-sublabel">
-                      Playing the newest games from {stats.mostCommonYear}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="stat-value">{stats.boardGamerAge}</div>
-                    <div className="stat-label">Your Board Gamer Age</div>
-                    <div className="stat-sublabel">
-                      Playing games from {stats.mostCommonYear}
-                    </div>
-                  </>
-                )}
+                <div className="stat-value">{stats.averageGameAge}</div>
+                <div className="stat-label">Average Game Age</div>
+                <div className="stat-sublabel">
+                  {stats.averageGameAge === 0
+                    ? "Playing the hottest new releases! 🔥"
+                    : stats.averageGameAge === 1
+                    ? "Playing games about 1 year old"
+                    : `Playing games about ${stats.averageGameAge} years old`}
+                </div>
               </div>
             )}
         </div>
