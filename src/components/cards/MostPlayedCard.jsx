@@ -35,7 +35,7 @@ function MostPlayedCard({ username, games }) {
         </div>
 
         <div className="card-footer">
-          <p className="footer-text">🎲 BGG Wrapped</p>
+          <p className="footer-text">🎲 2025 BG Wrapped</p>
         </div>
       </div>
     </div>
