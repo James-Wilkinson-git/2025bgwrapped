@@ -3,8 +3,14 @@ import "./Card.css";
 function MostPlayedCard({ username, games }) {
   const topGames = games.slice(0, 5);
 
+  const fallbackImage =
+    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="70" height="70"><rect width="70" height="70" fill="%23667eea"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="14" fill="white" font-weight="bold">BGG</text></svg>';
+
   const handleImageError = (e) => {
-    e.target.src = "https://placehold.co/70x70/667eea/ffffff?text=BGG";
+    console.log("Image failed to load:", e.target.src);
+    // Prevent infinite loop by removing the error handler after first failure
+    e.target.onerror = null;
+    e.target.src = fallbackImage;
   };
 
   return (
@@ -22,10 +28,12 @@ function MostPlayedCard({ username, games }) {
               <div className="game-card-rank">#{index + 1}</div>
               <div className="game-card-image-wrapper">
                 <img
-                  src={game.thumbnail}
+                  src={game.thumbnail || fallbackImage}
                   alt={game.gameName}
                   className="game-card-image"
                   onError={handleImageError}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="game-card-content">
