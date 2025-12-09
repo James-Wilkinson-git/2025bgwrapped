@@ -3,8 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 2rem;
+  justify-content: center;
+  padding: 3rem 2rem;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -117,9 +117,9 @@
 .card-content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   height: 100%;
-  gap: 0;
+  gap: 2rem;
   position: relative;
   z-index: 1;
 }
@@ -219,15 +219,14 @@
 .stats-grid {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 1rem 0;
-  flex: 1;
-  justify-content: center;
+  gap: 1.5rem;
+  padding: 0;
+  flex: 0;
 }
 
 .stat-item {
   text-align: center;
-  padding: 2rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
@@ -295,7 +294,7 @@
 }
 
 .stat-value {
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: 900;
   line-height: 1;
   margin-bottom: 0.5rem;
