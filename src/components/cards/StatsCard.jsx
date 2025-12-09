@@ -38,7 +38,9 @@ function StatsCard({ username, stats }) {
         </div>
 
         <div className="card-footer">
-          <p className="footer-text">🎲 2025 BG Wrapped</p>
+          <p className="footer-text">
+            🎲 bgwrapped.boardgaymesjames.com @boardgaymesjames
+          </p>
         </div>
       </div>
     </div>

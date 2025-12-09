@@ -82,12 +82,18 @@
   right: 0;
 }
 
-/* Save button */
-.save-button {
+/* Floating action buttons */
+.action-buttons-floating {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.floating-button {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -103,17 +109,17 @@
   justify-content: center;
 }
 
-.save-button:hover:not(:disabled) {
+.floating-button:hover:not(:disabled) {
   transform: scale(1.1);
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-.save-button:active:not(:disabled) {
+.floating-button:active:not(:disabled) {
   transform: scale(0.95);
 }
 
-.save-button:disabled {
+.floating-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

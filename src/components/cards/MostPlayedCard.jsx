@@ -8,7 +8,7 @@ function MostPlayedCard({ username, games }) {
 
   const proxyImageUrl = (url) => {
     if (!url || url.startsWith("data:")) return url;
-    return `http://localhost:4000/api/proxy-image?url=${encodeURIComponent(
+    return `https://bgg-app-backend-1.onrender.com/api/proxy-image?url=${encodeURIComponent(
       url
     )}`;
   };
@@ -50,7 +50,9 @@ function MostPlayedCard({ username, games }) {
         </div>
 
         <div className="card-footer">
-          <p className="footer-text">🎲 2025 BG Wrapped</p>
+          <p className="footer-text">
+            🎲 bgwrapped.boardgaymesjames.com @boardgaymesjames
+          </p>
         </div>
       </div>
     </div>

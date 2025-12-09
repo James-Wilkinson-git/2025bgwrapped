@@ -11,6 +11,7 @@ function WrappedCards({ username, data, onReset }) {
   const [currentCard, setCurrentCard] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const cardRef = useRef(null);
 
   const handleSaveImage = async () => {
@@ -43,34 +44,16 @@ function WrappedCards({ username, data, onReset }) {
           })
         );
 
-        // Wait for render
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        // Wait for render and ensure all proxy images are loaded
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
-        let canvas;
-        try {
-          canvas = await html2canvas(cardElement, {
-            scale: 2,
-            allowTaint: true,
-            useCORS: false,
-            backgroundColor: "#000000",
-            logging: false,
-            ignoreElements: (element) => {
-              // Skip elements that might cause issues
-              return false;
-            },
-          });
-        } catch (canvasError) {
-          console.error("html2canvas error:", canvasError);
-          // Restore animations even if capture fails
-          wrappedCard.style.animation = originalAnimation;
-          allElements.forEach((el, index) => {
-            el.style.animation = originalAnimations[index];
-          });
-          alert(
-            "Failed to capture image. External images may be blocked by CORS."
-          );
-          return;
-        }
+        const canvas = await html2canvas(cardElement, {
+          scale: 2,
+          allowTaint: false,
+          useCORS: true,
+          backgroundColor: "#000000",
+          logging: true,
+        });
 
         // Restore animations
         wrappedCard.style.animation = originalAnimation;
@@ -81,9 +64,12 @@ function WrappedCards({ username, data, onReset }) {
         canvas.toBlob(
           (blob) => {
             if (blob) {
+              const fileName = `${username}-2025-wrapped-${
+                currentCard + 1
+              }.png`;
               const url = URL.createObjectURL(blob);
               const link = document.createElement("a");
-              link.download = `${username}-2025-wrapped-${currentCard + 1}.png`;
+              link.download = fileName;
               link.href = url;
               link.click();
               URL.revokeObjectURL(url);
@@ -95,9 +81,96 @@ function WrappedCards({ username, data, onReset }) {
       }
     } catch (err) {
       console.error("Failed to save image:", err);
-      alert("Failed to save image. Please try taking a screenshot instead.");
     } finally {
       setDownloading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    setSharing(true);
+    try {
+      const cardElement = document.getElementById(`card-${currentCard}`);
+      if (cardElement) {
+        // Temporarily disable animations for capture
+        const wrappedCard = cardElement.querySelector(".wrapped-card");
+        const originalAnimation = wrappedCard.style.animation;
+        wrappedCard.style.animation = "none";
+
+        // Disable all child animations
+        const allElements = wrappedCard.querySelectorAll("*");
+        const originalAnimations = [];
+        allElements.forEach((el, index) => {
+          originalAnimations[index] = el.style.animation;
+          el.style.animation = "none";
+        });
+
+        // Wait for images to fully load
+        const images = wrappedCard.querySelectorAll("img");
+        await Promise.all(
+          Array.from(images).map((img) => {
+            if (img.complete) return Promise.resolve();
+            return new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+            });
+          })
+        );
+
+        // Wait for render and ensure all proxy images are loaded
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        const canvas = await html2canvas(cardElement, {
+          scale: 2,
+          allowTaint: false,
+          useCORS: true,
+          backgroundColor: "#000000",
+          logging: true,
+        });
+
+        // Restore animations
+        wrappedCard.style.animation = originalAnimation;
+        allElements.forEach((el, index) => {
+          el.style.animation = originalAnimations[index];
+        });
+
+        canvas.toBlob(
+          async (blob) => {
+            if (blob) {
+              const fileName = `${username}-2025-wrapped-${
+                currentCard + 1
+              }.png`;
+
+              // Use Web Share API
+              if (navigator.share && navigator.canShare) {
+                try {
+                  const file = new File([blob], fileName, {
+                    type: "image/png",
+                  });
+                  const shareData = {
+                    files: [file],
+                    title: `${username}'s 2025 Board Game Wrapped`,
+                    text: `Check out my 2025 board game stats!`,
+                  };
+
+                  if (navigator.canShare(shareData)) {
+                    await navigator.share(shareData);
+                  }
+                } catch (err) {
+                  console.log("Share failed or was cancelled:", err);
+                }
+              } else {
+                alert("Sharing is not supported on this device");
+              }
+            }
+          },
+          "image/png",
+          1.0
+        );
+      }
+    } catch (err) {
+      console.error("Failed to share image:", err);
+    } finally {
+      setSharing(false);
     }
   };
 
@@ -169,15 +242,32 @@ function WrappedCards({ username, data, onReset }) {
       <div className="tap-zone tap-zone-left" onClick={handlePrev} />
       <div className="tap-zone tap-zone-right" onClick={handleNext} />
 
-      {/* Save button */}
-      <button
-        className="save-button"
-        onClick={handleSaveImage}
-        disabled={downloading}
-        title="Save as image"
-      >
-        {downloading ? "💾" : "📥"}
-      </button>
+      {/* Action buttons */}
+      <div className="action-buttons-floating">
+        <button
+          className="floating-button refresh-button"
+          onClick={onReset}
+          title="New user"
+        >
+          🔄
+        </button>
+        <button
+          className="floating-button share-button"
+          onClick={handleShare}
+          disabled={sharing}
+          title="Share"
+        >
+          🌐
+        </button>
+        <button
+          className="floating-button save-button"
+          onClick={handleSaveImage}
+          disabled={downloading}
+          title="Save as image"
+        >
+          💾
+        </button>
+      </div>
 
       <div className="card-viewer">
         <div

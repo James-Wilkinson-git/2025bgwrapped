@@ -119,7 +119,7 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  gap: 2rem;
+  gap: 1rem;
   position: relative;
   z-index: 1;
 }
@@ -234,26 +234,8 @@
   border: 3px solid rgba(255, 255, 255, 0.5);
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: fadeIn 0.6s ease-out backwards,
-    statFloat 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-}
-
-.stat-item:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.7);
-}
-
-@keyframes statFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
 }
 
 .stat-item:nth-child(1) {
@@ -363,7 +345,6 @@
 }
 
 .game-item:hover {
-  transform: translateX(5px) scale(1.02);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.85);
@@ -434,7 +415,6 @@
 }
 
 .game-item:hover .game-thumbnail {
-  transform: scale(1.05) rotate(2deg);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
@@ -577,7 +557,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 2rem 0;
+  padding: 0;
   justify-content: center;
 }
 
@@ -602,7 +582,6 @@
 }
 
 .tag-item:hover {
-  transform: translateY(-3px) scale(1.05) rotate(1deg);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.85);
@@ -675,6 +654,7 @@
 
 /* Card footer */
 .card-footer {
+  color: #3a3a4e;
   text-align: center;
   padding-top: 1rem;
   margin-top: auto;
@@ -683,6 +663,6 @@
 .footer-text {
   font-size: 1.2rem;
   font-weight: 700;
-  opacity: 0.8;
-  letter-spacing: 0.1rem;
+  opacity: 1;
+  letter-spacing: -0.02rem;
 }
