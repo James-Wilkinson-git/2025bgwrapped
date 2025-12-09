@@ -7,9 +7,9 @@ function CategoriesCard({ username, categories }) {
     <div className="wrapped-card gradient-orange">
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">2025</h2>
-          <h1 className="card-title">Top Themes</h1>
-          <p className="username">@{username}</p>
+          <h2 className="year-label">✨ 2025 ✨</h2>
+          <h1 className="card-title">🎨 Top Themes 🎨</h1>
+          <p className="username">{username}</p>
         </div>
 
         <div className="tags-container">

@@ -9,15 +9,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleFetchData = async (user) => {
+  const handleFetchData = async (user, excludeBGA = false) => {
     setLoading(true);
     setError("");
     setUsername(user);
 
     try {
       // First, fetch plays data to populate the database
+      const excludeParam = excludeBGA ? "?excludeBGA=true" : "";
       const playsRes = await fetch(
-        `https://bgg-app-backend-1.onrender.com/api/plays/${user}`
+        `https://bgg-app-backend-1.onrender.com/api/plays/${user}${excludeParam}`
       );
 
       if (!playsRes.ok) {
@@ -29,10 +30,10 @@ function App() {
       // Then fetch both stats and most played data
       const [statsRes, mostPlayedRes] = await Promise.all([
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParam}`
         ),
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParam}`
         ),
       ]);
 

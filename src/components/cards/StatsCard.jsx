@@ -5,9 +5,9 @@ function StatsCard({ username, stats }) {
     <div className="wrapped-card gradient-purple">
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">2025</h2>
-          <h1 className="card-title">Your Year in Games</h1>
-          <p className="username">@{username}</p>
+          <h2 className="year-label">✨ 2025 ✨</h2>
+          <h1 className="card-title">🎲 Your Year in Games 🎲</h1>
+          <p className="username">{username}</p>
         </div>
 
         <div className="stats-grid">
