@@ -40,17 +40,25 @@ function WrappedCards({ username, data, onReset }) {
     try {
       const cardElement = document.getElementById(`card-${currentCard}`);
       if (cardElement) {
-        const dataUrl = await toPng(cardElement, {
-          quality: 1,
-          pixelRatio: 2,
-          width: 1080,
-          height: 1920,
-        });
+        // Get the actual card element (first child which is the wrapped-card)
+        const actualCard = cardElement.querySelector(".wrapped-card");
 
-        const link = document.createElement("a");
-        link.download = `${username}-2025-bgg-wrapped-${currentCard + 1}.png`;
-        link.href = dataUrl;
-        link.click();
+        if (actualCard) {
+          const dataUrl = await toPng(actualCard, {
+            quality: 1,
+            pixelRatio: 2,
+            width: 1080,
+            height: 1920,
+            style: {
+              borderRadius: "0px",
+            },
+          });
+
+          const link = document.createElement("a");
+          link.download = `${username}-2025-bgg-wrapped-${currentCard + 1}.png`;
+          link.href = dataUrl;
+          link.click();
+        }
       }
     } catch (err) {
       console.error("Failed to download image:", err);

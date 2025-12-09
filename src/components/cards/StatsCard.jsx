@@ -21,15 +21,28 @@ function StatsCard({ username, stats }) {
             <div className="stat-label">Unique Games</div>
           </div>
 
-          {stats.boardGamerAge && (
-            <div className="stat-item large">
-              <div className="stat-value">{stats.boardGamerAge}</div>
-              <div className="stat-label">Your Board Gamer Age</div>
-              <div className="stat-sublabel">
-                Playing games from {stats.mostCommonYear}
+          {stats.boardGamerAge !== null &&
+            stats.boardGamerAge !== undefined && (
+              <div className="stat-item large">
+                {stats.boardGamerAge === 0 ? (
+                  <>
+                    <div className="stat-value">🔥</div>
+                    <div className="stat-label">Hot Off the Press</div>
+                    <div className="stat-sublabel">
+                      Playing the newest games from {stats.mostCommonYear}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="stat-value">{stats.boardGamerAge}</div>
+                    <div className="stat-label">Your Board Gamer Age</div>
+                    <div className="stat-sublabel">
+                      Playing games from {stats.mostCommonYear}
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          )}
+            )}
         </div>
 
         <div className="card-footer">
