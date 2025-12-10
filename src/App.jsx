@@ -1,21 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import "./App.css";
 import UsernameInput from "./components/UsernameInput";
 import WrappedCards from "./components/WrappedCards";
 
-function App() {
+function WrappedPage() {
+  const { username: urlUsername } = useParams();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (urlUsername) {
+      handleFetchData(urlUsername);
+    }
+  }, [urlUsername]);
 
   const handleFetchData = async (user) => {
     setLoading(true);
     setError("");
     setUsername(user);
 
+    // Update URL when fetching data
+    if (!urlUsername) {
+      navigate(`/${user}`);
+    }
+
     try {
-      // First, fetch plays data to populate the database
+      // Try to fetch analytics first to see if data exists
+      const [statsRes, mostPlayedRes] = await Promise.all([
+        fetch(
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
+        ),
+        fetch(
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
+        ),
+      ]);
+
+      let stats = null;
+      let mostPlayed = null;
+
+      // If analytics data exists, use it
+      if (statsRes.ok && mostPlayedRes.ok) {
+        stats = await statsRes.json();
+        mostPlayed = await mostPlayedRes.json();
+
+        // Check if we actually have data
+        if (stats.totalPlays > 0 || mostPlayed.mostPlayed?.length > 0) {
+          setData({ stats, mostPlayed });
+          return;
+        }
+      }
+
+      // If no data exists, fetch plays from BGG first
       const playsRes = await fetch(
         `https://bgg-app-backend-1.onrender.com/api/plays/${user}`
       );
@@ -26,8 +65,8 @@ function App() {
 
       await playsRes.json();
 
-      // Then fetch both stats and most played data
-      const [statsRes, mostPlayedRes] = await Promise.all([
+      // Now fetch analytics again
+      const [newStatsRes, newMostPlayedRes] = await Promise.all([
         fetch(
           `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
         ),
@@ -36,12 +75,12 @@ function App() {
         ),
       ]);
 
-      if (!statsRes.ok || !mostPlayedRes.ok) {
+      if (!newStatsRes.ok || !newMostPlayedRes.ok) {
         throw new Error("Failed to fetch analytics data");
       }
 
-      const stats = await statsRes.json();
-      const mostPlayed = await mostPlayedRes.json();
+      stats = await newStatsRes.json();
+      mostPlayed = await newMostPlayedRes.json();
 
       setData({ stats, mostPlayed });
     } catch (err) {
@@ -57,6 +96,7 @@ function App() {
     setUsername("");
     setData(null);
     setError("");
+    navigate("/");
   };
 
   return (
@@ -71,6 +111,15 @@ function App() {
         <WrappedCards username={username} data={data} onReset={handleReset} />
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<WrappedPage />} />
+      <Route path="/:username" element={<WrappedPage />} />
+    </Routes>
   );
 }
 
