@@ -400,7 +400,7 @@
 }
 
 .game-card-image-wrapper {
-  height: 140px;
+  height: 80px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;

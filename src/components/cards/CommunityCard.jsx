@@ -8,8 +8,6 @@ function CommunityCard({ games }) {
     return null;
   }
 
-  console.log("Community games data:", games);
-
   const fallbackImage =
     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="70" height="70"><rect width="70" height="70" fill="%23f093fb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="14" fill="white" font-weight="bold">BGG</text></svg>';
 
