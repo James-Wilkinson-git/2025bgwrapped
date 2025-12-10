@@ -5,6 +5,8 @@ import MostPlayedCard from "./cards/MostPlayedCard";
 import MechanicsCard from "./cards/MechanicsCard";
 import CategoriesCard from "./cards/CategoriesCard";
 import PublishersCard from "./cards/PublishersCard";
+import DesignersCard from "./cards/DesignersCard";
+import ArtistsCard from "./cards/ArtistsCard";
 import CommunityCard from "./cards/CommunityCard";
 
 function WrappedCards({ username, data, onReset }) {
@@ -48,7 +50,17 @@ function WrappedCards({ username, data, onReset }) {
     {
       id: "publishers",
       component: PublishersCard,
-      props: { publishers: data.mostPlayed.topPublishers },
+      props: { publishers: data.mostPlayed.topPublishers || [] },
+    },
+    {
+      id: "designers",
+      component: DesignersCard,
+      props: { designers: data.mostPlayed.topDesigners || [] },
+    },
+    {
+      id: "artists",
+      component: ArtistsCard,
+      props: { artists: data.mostPlayed.topArtists || [] },
     },
     ...(communityGames.length > 0
       ? [
