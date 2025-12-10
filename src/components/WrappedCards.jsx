@@ -206,26 +206,27 @@ function WrappedCards({ username, data, onReset }) {
       const file = new File([blob], filename, { type: "image/png" });
 
       if (navigator.share) {
-        if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+        try {
           await navigator.share({
             files: [file],
             title: `${username}'s 2025 Board Game Wrapped`,
             text: "Check out my 2025 board game stats!",
           });
           return;
+        } catch (shareErr) {
+          if (shareErr?.name === "AbortError") {
+            console.info("Share cancelled by user");
+            return;
+          }
+          console.warn("File share failed, falling back to download", shareErr);
         }
-      } else {
-        downloadBlob(blob, filename);
-        alert(
-          "Share is not supported on this device. Image downloaded instead."
-        );
-        return;
       }
 
       downloadBlob(blob, filename);
-      alert(
-        "Share is not supported with files on this device. Image downloaded instead."
-      );
+      const message = navigator.share
+        ? "Sharing failed on this device. Image downloaded instead."
+        : "Share is not supported on this device. Image downloaded instead.";
+      alert(message);
     } catch (err) {
       if (err.name === "AbortError") {
         console.info("Share cancelled by user");
