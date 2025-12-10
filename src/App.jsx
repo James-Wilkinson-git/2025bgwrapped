@@ -99,7 +99,7 @@ function WrappedPage() {
     setError("");
     try {
       const playsRes = await fetch(
-        `https://bgg-app-backend-1.onrender.com/api/plays/${username}`
+        `https://bgg-app-backend-1.onrender.com/api/plays/${username}?refetch=true`
       );
       if (!playsRes.ok) {
         throw new Error("Failed to fetch plays data from BGG");
@@ -134,6 +134,7 @@ function WrappedPage() {
     setUsername("");
     setData(null);
     setError("");
+    setLoading(false);
     navigate("/");
   };
 
