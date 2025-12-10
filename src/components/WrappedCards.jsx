@@ -14,6 +14,7 @@ function WrappedCards({ username, data, onReset }) {
   const [currentCard, setCurrentCard] = useState(0);
   const [uiVisible, setUiVisible] = useState(true);
   const [communityGames, setCommunityGames] = useState([]);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Fetch community popular games
   useEffect(() => {
@@ -76,6 +77,17 @@ function WrappedCards({ username, data, onReset }) {
 
   const handleToggleUI = () => {
     setUiVisible(!uiVisible);
+  };
+
+  const handleShare = async () => {
+    try {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
   };
 
   const handleNext = () => {
@@ -168,6 +180,28 @@ function WrappedCards({ username, data, onReset }) {
       {uiVisible && (
         <div className="controls-wrapper">
           <div className="story-actions">
+            <button
+              type="button"
+              className="story-action-button"
+              onClick={handleShare}
+              title="Share Link"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              <span>{copySuccess ? "Copied!" : "Share"}</span>
+            </button>
             <button
               type="button"
               className="story-action-button"
