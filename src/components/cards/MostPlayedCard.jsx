@@ -1,4 +1,6 @@
 import "./Card.css";
+import CardFooter from "./CardFooter";
+import CardWatermark from "./CardWatermark";
 
 function MostPlayedCard({ username, games }) {
   const topGames = games.slice(0, 5);
@@ -22,9 +24,10 @@ function MostPlayedCard({ username, games }) {
 
   return (
     <div className="wrapped-card gradient-blue">
+      <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 ✨</h2>
+          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
           <h1 className="card-title">🏆 Most Played 🏆</h1>
           <p className="username">{username}</p>
         </div>
@@ -49,11 +52,7 @@ function MostPlayedCard({ username, games }) {
           ))}
         </div>
 
-        <div className="card-footer">
-          <p className="footer-text">
-            🎲 bgwrapped.boardgaymesjames.com @boardgaymesjames
-          </p>
-        </div>
+        <CardFooter />
       </div>
     </div>
   );

@@ -1,13 +1,16 @@
 import "./Card.css";
+import CardFooter from "./CardFooter";
+import CardWatermark from "./CardWatermark";
 
 function DesignersCard({ username, designers }) {
   const topDesigners = designers.slice(0, 8);
 
   return (
     <div className="wrapped-card gradient-blue">
+      <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 ✨</h2>
+          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
           <h1 className="card-title">🎨 Top Designers 🎨</h1>
           <p className="username">{username}</p>
         </div>
@@ -21,11 +24,7 @@ function DesignersCard({ username, designers }) {
           ))}
         </div>
 
-        <div className="card-footer">
-          <p className="footer-text">
-            🎲 bgwrapped.boardgaymesjames.com @boardgaymesjames
-          </p>
-        </div>
+        <CardFooter />
       </div>
     </div>
   );

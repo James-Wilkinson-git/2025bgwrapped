@@ -1,5 +1,7 @@
 import React from "react";
 import "./Card.css";
+import CardFooter from "./CardFooter";
+import CardWatermark from "./CardWatermark";
 
 function CommunityCard({ games }) {
   if (!games || games.length === 0) {
@@ -24,12 +26,12 @@ function CommunityCard({ games }) {
   };
 
   return (
-    <div className="wrapped-card gradient-pink">
+    <div className="wrapped-card gradient-purple">
+      <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 ✨</h2>
-          <h1 className="card-title">🌍 Community Favs 🌍</h1>
-          <p className="username">Most Played by Bg Wrapped Users </p>
+          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
+          <h1 className="card-title">🌍 User Favs 🌍</h1>
         </div>
         <div className="games-showcase">
           {games.slice(0, 5).map((game, index) => (
@@ -52,11 +54,7 @@ function CommunityCard({ games }) {
             </div>
           ))}
         </div>
-        <div className="card-footer">
-          <p className="footer-text">
-            🎲 bgwrapped.boardgaymesjames.com @boardgaymesjames
-          </p>
-        </div>
+        <CardFooter />
       </div>
     </div>
   );

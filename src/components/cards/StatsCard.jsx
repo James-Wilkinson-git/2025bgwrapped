@@ -1,11 +1,14 @@
 import "./Card.css";
+import CardFooter from "./CardFooter";
+import CardWatermark from "./CardWatermark";
 
 function StatsCard({ username, stats }) {
   return (
     <div className="wrapped-card gradient-purple">
+      <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 ✨</h2>
+          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
           <h1 className="card-title">🎲 Your Year in Games 🎲</h1>
           <p className="username">{username}</p>
         </div>
@@ -37,11 +40,7 @@ function StatsCard({ username, stats }) {
             )}
         </div>
 
-        <div className="card-footer">
-          <p className="footer-text">
-            🎲 bgwrapped.boardgaymesjames.com @boardgaymesjames
-          </p>
-        </div>
+        <CardFooter />
       </div>
     </div>
   );
