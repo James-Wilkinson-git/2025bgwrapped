@@ -1,13 +1,22 @@
 .wrapped-card {
   width: 100%;
   height: 100%;
-  padding: 1em;
+  padding: max(env(safe-area-inset-top), 24px)
+    max(env(safe-area-inset-right), 16px) 100px
+    max(env(safe-area-inset-left), 16px);
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: clamp(12px, 2.5vw, 14px);
+}
+
+@media (min-width: 768px) {
+  .wrapped-card {
+    font-size: 14px;
+    padding: 32px 24px 110px;
+  }
 }
 
 .wrapped-card::before {
@@ -98,16 +107,16 @@
 }
 
 .year-label {
-  font-size: 2em;
+  font-size: 1.4em;
   font-weight: 900;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.5em;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4em;
   opacity: 1;
   text-transform: uppercase;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   display: inline-block;
-  padding: 0.5em 2em;
+  padding: 0.4em 1.5em;
   border-radius: 50px;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.4);
@@ -126,14 +135,14 @@
 }
 
 .card-title {
-  font-size: 4em;
+  font-size: 2.5em;
   font-weight: 900;
   line-height: 1.1;
-  margin-bottom: 0.25em;
+  margin-bottom: 0.2em;
   text-align: center;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.03em;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4), 0 1px 6px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.02em;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   animation: titleAppear 1s ease-out;
 }
 
@@ -152,11 +161,11 @@
 }
 
 .username {
-  font-size: 2.5em;
+  font-size: 1.6em;
   font-weight: 700;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.4em;
   opacity: 1;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   animation: wiggle 5s ease-in-out infinite;
 }
 
@@ -177,15 +186,15 @@
 .stats-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1em;
   padding: 0;
-  margin: 1em 0;
+  margin: 0.8em 0;
   flex: 0;
 }
 
 .stat-item {
   text-align: center;
-  padding: 1.5em;
+  padding: 1em;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
@@ -235,7 +244,7 @@
 }
 
 .stat-value {
-  font-size: 8.5em;
+  font-size: 5em;
   font-weight: 900;
   line-height: 1;
   margin-bottom: 0;
@@ -258,22 +267,22 @@
 }
 
 .stat-label {
-  font-size: 1.5em;
+  font-size: 1.1em;
   font-weight: 700;
   color: #2a2a3e;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   position: relative;
   text-shadow: none;
 }
 
 .stat-sublabel {
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: 500;
   color: #3a3a4e;
   text-transform: none;
   letter-spacing: 0;
-  margin-top: 0.5em;
+  margin-top: 0.4em;
   position: relative;
 }
 
@@ -292,7 +301,7 @@
 .games-showcase {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.4em;
   flex: 1;
 }
 
@@ -301,13 +310,13 @@
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
-  border-radius: 18px;
-  border: 13px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   overflow: hidden;
   display: flex;
   align-items: stretch;
   animation: slideInRight 0.5s ease-out backwards;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
 .game-card:nth-child(1) {
@@ -328,21 +337,21 @@
 
 .game-card-rank {
   position: absolute;
-  top: 0.4em;
-  right: 0.4em;
+  top: 0.3em;
+  right: 0.3em;
   background: rgba(0, 0, 0, 0.6);
   color: white;
-  font-size: 2em;
+  font-size: 1.3em;
   font-weight: 900;
-  padding: 0.3em 0.7em;
-  border-radius: 8px;
+  padding: 0.25em 0.6em;
+  border-radius: 6px;
   z-index: 2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
 }
 
 .game-card-image-wrapper {
-  height: 255px;
+  height: 140px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -357,11 +366,11 @@
 
 .game-card-content {
   flex: 1;
-  padding: 0.5em;
+  padding: 0.4em;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5em;
+  gap: 0.3em;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.15) 0%,
@@ -370,7 +379,7 @@
 }
 
 .game-card-name {
-  font-size: 3em;
+  font-size: 1.6em;
   font-weight: 900;
   color: #1a1a2e;
   line-height: 1.2;
@@ -384,7 +393,7 @@
 }
 
 .game-card-plays {
-  font-size: 2em;
+  font-size: 1.2em;
   font-weight: 700;
   color: #3a3a4e;
   text-shadow: none;
@@ -394,27 +403,27 @@
 .tags-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 1em;
+  gap: 0.6em;
   padding: 0;
-  margin: 1em 0;
+  margin: 0.8em 0;
   justify-content: center;
 }
 
 .tag-item {
   display: flex;
   align-items: center;
-  gap: 1.5em;
-  padding: 0.5em 1em;
+  gap: 0.8em;
+  padding: 0.4em 0.8em;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
   border-radius: 50px;
-  border: 3px solid rgba(255, 255, 255, 0.5);
-  font-size: 2em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  font-size: 1.3em;
   font-weight: 800;
   position: relative;
   animation: popIn 0.4s ease-out backwards;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
   text-shadow: none;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -473,11 +482,11 @@
 .tag-count {
   background: rgba(26, 26, 46, 0.15);
   color: #1a1a2e;
-  padding: 0.25em 0.75em;
-  border-radius: 20px;
-  font-size: 1.1em;
+  padding: 0.2em 0.6em;
+  border-radius: 15px;
+  font-size: 1em;
   font-weight: 900;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   animation: glow 2s ease-in-out infinite;
 }
 
@@ -495,12 +504,12 @@
 .card-footer {
   color: #3a3a4e;
   text-align: center;
-  margin-top: 0.5em;
+  margin-top: 0.4em;
 }
 
 .footer-text {
-  font-size: 2em;
+  font-size: 1.3em;
   font-weight: 700;
   opacity: 1;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }

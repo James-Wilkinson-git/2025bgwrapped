@@ -1,8 +1,9 @@
 .app {
-  width: 1080px;
-  height: 1920px;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  background: #000;
   overflow: hidden;
 }
