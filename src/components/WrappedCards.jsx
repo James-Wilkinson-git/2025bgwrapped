@@ -111,24 +111,24 @@ function WrappedCards({ username, data, onReset }) {
       const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
       const blob = await generateImageFromBackend();
 
-      // Check if we're on mobile with share capability
+      // Check if we're on mobile
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      if (
-        isMobile &&
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({
-          files: [new File([blob], filename, { type: "image/png" })],
-        })
-      ) {
-        // Mobile: use share API (saves to Photos on iOS)
-        const file = new File([blob], filename, { type: "image/png" });
-        await navigator.share({
-          files: [file],
-          title: "2025 BGG Wrapped",
-          text: `My 2025 Board Game Wrapped - Card ${currentCard + 1}`,
-        });
+      if (isMobile && navigator.share) {
+        // Mobile: try share API (saves to Photos on iOS)
+        try {
+          const file = new File([blob], filename, { type: "image/png" });
+          await navigator.share({
+            files: [file],
+            title: "2025 BGG Wrapped",
+            text: `My 2025 Board Game Wrapped - Card ${currentCard + 1}`,
+          });
+        } catch (shareErr) {
+          // If share fails, fall back to download
+          if (shareErr.name !== "AbortError") {
+            throw shareErr;
+          }
+        }
       } else {
         // Desktop: direct download
         const imageUrl = URL.createObjectURL(blob);
