@@ -87,6 +87,8 @@
   position: relative;
   z-index: 1;
   scrollbar-gutter: stable both-edges;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .card-header {
