@@ -120,15 +120,18 @@ function WrappedCards({ username, data, onReset }) {
     try {
       const targetWidth = 1080;
       const targetHeight = 1920;
-      const scale = Math.max(1, targetWidth / sourceWidth);
+      const scale = Math.max(2, targetWidth / sourceWidth);
 
       let canvas = await html2canvas(clone, {
         width: sourceWidth,
         height: sourceHeight,
         scale,
         useCORS: true,
+        allowTaint: false,
         backgroundColor: null,
         logging: false,
+        imageTimeout: 0,
+        removeContainer: false,
       });
       if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
         const scaledCanvas = document.createElement("canvas");
@@ -343,57 +346,59 @@ function WrappedCards({ username, data, onReset }) {
         </div>
       </div>
 
-      {showControls && (
-        <div className="card-controls">
+      <div className="controls-wrapper">
+        {showControls && (
+          <div className="card-controls">
+            <button
+              type="button"
+              className="nav-button"
+              onClick={handlePrev}
+              disabled={currentCard === 0}
+            >
+              Previous
+            </button>
+            <span className="card-index">
+              {currentCard + 1} / {totalCards}
+            </span>
+            <button
+              type="button"
+              className="nav-button"
+              onClick={handleNext}
+              disabled={currentCard === totalCards - 1}
+            >
+              Next
+            </button>
+          </div>
+        )}
+
+        <div className="card-actions">
           <button
             type="button"
-            className="nav-button"
-            onClick={handlePrev}
-            disabled={currentCard === 0}
+            className="action-button"
+            onClick={onReset}
+            title="Search for another user"
           >
-            Previous
+            New User
           </button>
-          <span className="card-index">
-            {currentCard + 1} / {totalCards}
-          </span>
           <button
             type="button"
-            className="nav-button"
-            onClick={handleNext}
-            disabled={currentCard === totalCards - 1}
+            className="action-button"
+            onClick={handleShare}
+            disabled={sharing}
+            title="Share card"
           >
-            Next
+            Share
+          </button>
+          <button
+            type="button"
+            className="action-button"
+            onClick={handleSaveImage}
+            disabled={downloading}
+            title="Download card"
+          >
+            Save Image
           </button>
         </div>
-      )}
-
-      <div className="card-actions">
-        <button
-          type="button"
-          className="action-button"
-          onClick={onReset}
-          title="Search for another user"
-        >
-          New User
-        </button>
-        <button
-          type="button"
-          className="action-button"
-          onClick={handleShare}
-          disabled={sharing}
-          title="Share card"
-        >
-          Share
-        </button>
-        <button
-          type="button"
-          className="action-button"
-          onClick={handleSaveImage}
-          disabled={downloading}
-          title="Download card"
-        >
-          Save Image
-        </button>
       </div>
     </div>
   );

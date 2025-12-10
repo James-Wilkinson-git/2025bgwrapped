@@ -1,7 +1,8 @@
 .app {
-  min-height: 100vh;
+  width: 1080px;
+  height: 1920px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  align-items: flex-start;
+  overflow: hidden;
 }
