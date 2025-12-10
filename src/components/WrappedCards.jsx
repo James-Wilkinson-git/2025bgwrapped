@@ -195,19 +195,61 @@ function WrappedCards({ username, data, onReset }) {
   };
 
   const openImageForManualSave = (dataUrl, filename, blob, message) => {
-    const newWindow = window.open();
-    if (newWindow) {
-      newWindow.document.write(
-        `<!DOCTYPE html><html><head><title>${filename}</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;"><img src="${dataUrl}" alt="${filename}" style="width:100%;height:auto;display:block;" /></body></html>`
-      );
-      newWindow.document.close();
-      if (message) {
-        alert(message);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      // For iOS, create a direct download link
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = filename;
+      link.target = "_blank";
+
+      // iOS requires the image to be in a new window for saving
+      const newWindow = window.open();
+      if (newWindow) {
+        newWindow.document.write(
+          `<!DOCTYPE html>
+          <html>
+            <head>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+              <title>${filename}</title>
+              <style>
+                body { margin:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:20px; box-sizing:border-box; }
+                img { width:100%; max-width:1080px; height:auto; display:block; border-radius:8px; }
+                .instructions { color:#fff; text-align:center; margin-top:20px; font-family:system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.5; }
+                .instructions strong { display:block; margin-bottom:8px; font-size:18px; }
+              </style>
+            </head>
+            <body>
+              <img src="${dataUrl}" alt="${filename}" />
+              <div class="instructions">
+                <strong>📲 To Save This Image:</strong>
+                Tap and hold the image above, then select "Add to Photos" or "Save Image"
+              </div>
+            </body>
+          </html>`
+        );
+        newWindow.document.close();
+      } else {
+        alert(
+          "Please enable popups to save the image. Tap and hold the image to save it to your camera roll."
+        );
       }
-    } else if (blob) {
-      downloadBlob(blob, filename);
-      if (message) {
-        alert(message);
+    } else {
+      const newWindow = window.open();
+      if (newWindow) {
+        newWindow.document.write(
+          `<!DOCTYPE html><html><head><title>${filename}</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;"><img src="${dataUrl}" alt="${filename}" style="width:100%;height:auto;display:block;" /></body></html>`
+        );
+        newWindow.document.close();
+        if (message) {
+          alert(message);
+        }
+      } else if (blob) {
+        downloadBlob(blob, filename);
+        if (message) {
+          alert(message);
+        }
       }
     }
   };
@@ -219,25 +261,88 @@ function WrappedCards({ username, data, onReset }) {
     return { blob, dataUrl };
   };
 
-  const saveToDevice = (blob, dataUrl, filename, message) => {
-    if (isMobileDevice()) {
-      openImageForManualSave(dataUrl, filename, blob, message);
-    } else {
-      downloadBlob(blob, filename);
-      if (message) {
-        alert(message);
-      }
-    }
-  };
-
   const handleSaveImage = async () => {
     setDownloading(true);
     try {
       const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
       const { blob, dataUrl } = await exportCardAssets();
-      saveToDevice(blob, dataUrl, filename);
+
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isIOS) {
+        // For iOS, open in new tab so user can long-press to save
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>${filename}</title>
+                <style>
+                  body { 
+                    margin: 0; 
+                    padding: 20px; 
+                    background: #000; 
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: center; 
+                    justify-content: center; 
+                    min-height: 100vh; 
+                    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+                  }
+                  img { 
+                    max-width: 100%; 
+                    height: auto; 
+                    display: block; 
+                    border-radius: 8px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                  }
+                  .instructions { 
+                    color: #fff; 
+                    text-align: center; 
+                    margin-top: 24px; 
+                    padding: 16px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 12px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                  }
+                  .instructions strong { 
+                    display: block; 
+                    margin-bottom: 8px; 
+                    font-size: 18px;
+                    color: #4facfe;
+                  }
+                </style>
+              </head>
+              <body>
+                <img src="${dataUrl}" alt="${filename}" />
+                <div class="instructions">
+                  <strong>📲 How to Save:</strong>
+                  Tap and hold the image above, then select<br>"Add to Photos" or "Save Image"
+                </div>
+              </body>
+            </html>
+          `);
+          newTab.document.close();
+        } else {
+          alert(
+            "Please enable popups to save images. Alternatively, take a screenshot of the card."
+          );
+        }
+      } else {
+        // Desktop/Android - direct download
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     } catch (err) {
       console.error("Failed to save image:", err);
+      alert("Failed to save image: " + (err.message || "Unknown error"));
     } finally {
       setDownloading(false);
     }
@@ -246,15 +351,17 @@ function WrappedCards({ username, data, onReset }) {
   const handleShare = async () => {
     setSharing(true);
     const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
-    let blob = null;
-    let dataUrl = "";
+
     try {
-      const assets = await exportCardAssets();
-      blob = assets.blob;
-      dataUrl = assets.dataUrl;
+      const { blob, dataUrl } = await exportCardAssets();
       const file = new File([blob], filename, { type: "image/png" });
 
-      if (navigator.share) {
+      // Check if Web Share API is available and supports files
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({ files: [file] })
+      ) {
         try {
           await navigator.share({
             files: [file],
@@ -264,60 +371,22 @@ function WrappedCards({ username, data, onReset }) {
           return;
         } catch (shareErr) {
           if (shareErr?.name === "AbortError") {
-            console.info("Share cancelled by user");
             return;
           }
-          console.warn("File share failed, retrying with data URL", shareErr);
-          try {
-            await navigator.share({
-              title: `${username}'s 2025 Board Game Wrapped`,
-              text: "Check out my 2025 board game stats!",
-              url: dataUrl,
-            });
-            return;
-          } catch (urlShareErr) {
-            if (urlShareErr?.name === "AbortError") {
-              console.info("Share cancelled by user");
-              return;
-            }
-            console.warn(
-              "Sharing data URL failed, falling back to manual save",
-              urlShareErr
-            );
-          }
+          console.error("Share failed:", shareErr);
+          alert(
+            "Share failed. The image has been prepared - please use the Save Image button."
+          );
         }
-      }
-
-      const fallbackMessage = navigator.share
-        ? "Sharing failed on this device. Save the opened image to add it to your camera roll."
-        : "Share is not supported on this device. Save the opened image to add it to your camera roll.";
-      saveToDevice(blob, dataUrl, filename, fallbackMessage);
-    } catch (err) {
-      if (err.name === "AbortError") {
-        console.info("Share cancelled by user");
       } else {
-        if (blob) {
-          const fallbackDataUrl =
-            dataUrl || (window.URL ? window.URL.createObjectURL(blob) : "");
-          if (fallbackDataUrl) {
-            saveToDevice(
-              blob,
-              fallbackDataUrl,
-              filename,
-              "Sharing failed, but the image is available to save manually."
-            );
-            if (!dataUrl && window.URL && fallbackDataUrl.startsWith("blob:")) {
-              window.URL.revokeObjectURL(fallbackDataUrl);
-            }
-          } else {
-            downloadBlob(blob, filename);
-          }
-        }
-        console.error("Failed to share image:", err);
-        if (!isMobileDevice()) {
-          alert("Sharing failed, but the image has been downloaded instead.");
-        }
+        // Fallback: try direct download
+        alert(
+          "Share is not supported on this device. Use the Save Image button or take a screenshot."
+        );
       }
+    } catch (err) {
+      console.error("Failed to prepare image:", err);
+      alert("Failed to prepare image for sharing. Please try again.");
     } finally {
       setSharing(false);
     }
