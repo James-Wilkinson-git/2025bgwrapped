@@ -15,12 +15,6 @@ function UsernameInput({ onSubmit, loading, error }) {
   return (
     <div className="username-input-container">
       <div className="username-input-card">
-        <img
-          src={bggLogo}
-          alt="Powered by BGG"
-          className="bgg-logo"
-          style={{ maxWidth: "200px", marginBottom: "20px" }}
-        />
         <h1 className="title">🎲 2025 BG Wrapped</h1>
         <p className="subtitle">See your year in board games</p>
 
@@ -49,6 +43,12 @@ function UsernameInput({ onSubmit, loading, error }) {
         )}
 
         {error && <p className="error-message">{error}</p>}
+        <img
+          src={bggLogo}
+          alt="Powered by BGG"
+          className="bgg-logo"
+          style={{ maxWidth: "200px", marginTop: "20px" }}
+        />
       </div>
     </div>
   );
