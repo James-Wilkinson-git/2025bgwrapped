@@ -92,6 +92,44 @@ function WrappedPage() {
     }
   };
 
+  // Force refresh: always fetch plays from BGG, then analytics
+  const handleRefreshData = async () => {
+    if (!username) return;
+    setLoading(true);
+    setError("");
+    try {
+      const playsRes = await fetch(
+        `https://bgg-app-backend-1.onrender.com/api/plays/${username}`
+      );
+      if (!playsRes.ok) {
+        throw new Error("Failed to fetch plays data from BGG");
+      }
+      await playsRes.json();
+      // Now fetch analytics again
+      const [statsRes, mostPlayedRes] = await Promise.all([
+        fetch(
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${username}/stats`
+        ),
+        fetch(
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${username}/most-played`
+        ),
+      ]);
+      if (!statsRes.ok || !mostPlayedRes.ok) {
+        throw new Error("Failed to fetch analytics data");
+      }
+      const stats = await statsRes.json();
+      const mostPlayed = await mostPlayedRes.json();
+      setData({ stats, mostPlayed });
+    } catch (err) {
+      setError(
+        err.message ||
+          "Failed to refresh data. Make sure the backend is running."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleReset = () => {
     setUsername("");
     setData(null);
@@ -99,16 +137,42 @@ function WrappedPage() {
     navigate("/");
   };
 
+  // Helper to check if stats are truly empty
+  function isStatsEmpty(stats, mostPlayed) {
+    if (!stats || !mostPlayed) return true;
+    if (stats.totalPlays > 0) return false;
+    if (mostPlayed.mostPlayed && mostPlayed.mostPlayed.length > 0) return false;
+    return true;
+  }
+
   return (
     <div className="app">
-      {!data ? (
+      {loading ? (
+        <div className="loading-indicator">
+          <span>Loading your plays and stats...</span>
+        </div>
+      ) : !data ? (
         <UsernameInput
           onSubmit={handleFetchData}
           loading={loading}
           error={error}
         />
+      ) : isStatsEmpty(data.stats, data.mostPlayed) ? (
+        <div className="no-plays-message">
+          <h2>No plays found for this user.</h2>
+          <p>
+            If you just entered your username, please wait a moment and refresh.
+            If you have plays on BGG, they will appear once loaded.
+          </p>
+          <button onClick={() => handleFetchData(username)}>Retry</button>
+        </div>
       ) : (
-        <WrappedCards username={username} data={data} onReset={handleReset} />
+        <WrappedCards
+          username={username}
+          data={data}
+          onReset={handleReset}
+          onRefresh={handleRefreshData}
+        />
       )}
     </div>
   );
