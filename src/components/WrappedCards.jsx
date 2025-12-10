@@ -111,14 +111,18 @@ function WrappedCards({ username, data, onReset }) {
       const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
       const blob = await generateImageFromBackend();
 
-      // Try to use native share API first (works on iOS without popups)
+      // Check if we're on mobile with share capability
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
       if (
+        isMobile &&
         navigator.share &&
         navigator.canShare &&
         navigator.canShare({
           files: [new File([blob], filename, { type: "image/png" })],
         })
       ) {
+        // Mobile: use share API (saves to Photos on iOS)
         const file = new File([blob], filename, { type: "image/png" });
         await navigator.share({
           files: [file],
@@ -126,7 +130,7 @@ function WrappedCards({ username, data, onReset }) {
           text: `My 2025 Board Game Wrapped - Card ${currentCard + 1}`,
         });
       } else {
-        // Desktop fallback - direct download
+        // Desktop: direct download
         const imageUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = imageUrl;
