@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./UsernameInput.css";
+import bggLogo from "../bgglogo.png";
 
 function UsernameInput({ onSubmit, loading, error }) {
   const [username, setUsername] = useState("");
@@ -14,7 +15,13 @@ function UsernameInput({ onSubmit, loading, error }) {
   return (
     <div className="username-input-container">
       <div className="username-input-card">
-        <h1 className="title">🎲 2025 BGG Wrapped</h1>
+        <img
+          src={bggLogo}
+          alt="Powered by BGG"
+          className="bgg-logo"
+          style={{ maxWidth: "200px", marginBottom: "20px" }}
+        />
+        <h1 className="title">🎲 2025 BG Wrapped</h1>
         <p className="subtitle">See your year in board games</p>
 
         {loading ? (
