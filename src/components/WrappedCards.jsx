@@ -183,12 +183,56 @@ function WrappedCards({ username, data, onReset }) {
     URL.revokeObjectURL(url);
   };
 
+  const isMobileDevice = () => {
+    if (typeof navigator === "undefined") {
+      return false;
+    }
+    const ua = navigator.userAgent || "";
+    return /Android|iPhone|iPad|iPod/i.test(ua);
+  };
+
+  const openImageForManualSave = (dataUrl, filename, blob, message) => {
+    const newWindow = window.open();
+    if (newWindow) {
+      newWindow.document.write(
+        `<!DOCTYPE html><html><head><title>${filename}</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;"><img src="${dataUrl}" alt="${filename}" style="width:100%;height:auto;display:block;" /></body></html>`
+      );
+      newWindow.document.close();
+      if (message) {
+        alert(message);
+      }
+    } else if (blob) {
+      downloadBlob(blob, filename);
+      if (message) {
+        alert(message);
+      }
+    }
+  };
+
+  const exportCardAssets = async () => {
+    const canvas = await captureCardCanvas();
+    const blob = await canvasToBlob(canvas);
+    const dataUrl = canvas.toDataURL("image/png", 1.0);
+    return { blob, dataUrl };
+  };
+
+  const saveToDevice = (blob, dataUrl, filename, message) => {
+    if (isMobileDevice()) {
+      openImageForManualSave(dataUrl, filename, blob, message);
+    } else {
+      downloadBlob(blob, filename);
+      if (message) {
+        alert(message);
+      }
+    }
+  };
+
   const handleSaveImage = async () => {
     setDownloading(true);
     try {
-      const canvas = await captureCardCanvas();
-      const blob = await canvasToBlob(canvas);
-      downloadBlob(blob, `${username}-2025-wrapped-${currentCard + 1}.png`);
+      const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
+      const { blob, dataUrl } = await exportCardAssets();
+      saveToDevice(blob, dataUrl, filename);
     } catch (err) {
       console.error("Failed to save image:", err);
     } finally {
@@ -200,9 +244,11 @@ function WrappedCards({ username, data, onReset }) {
     setSharing(true);
     const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
     let blob = null;
+    let dataUrl = "";
     try {
-      const canvas = await captureCardCanvas();
-      blob = await canvasToBlob(canvas);
+      const assets = await exportCardAssets();
+      blob = assets.blob;
+      dataUrl = assets.dataUrl;
       const file = new File([blob], filename, { type: "image/png" });
 
       if (navigator.share) {
@@ -218,24 +264,56 @@ function WrappedCards({ username, data, onReset }) {
             console.info("Share cancelled by user");
             return;
           }
-          console.warn("File share failed, falling back to download", shareErr);
+          console.warn("File share failed, retrying with data URL", shareErr);
+          try {
+            await navigator.share({
+              title: `${username}'s 2025 Board Game Wrapped`,
+              text: "Check out my 2025 board game stats!",
+              url: dataUrl,
+            });
+            return;
+          } catch (urlShareErr) {
+            if (urlShareErr?.name === "AbortError") {
+              console.info("Share cancelled by user");
+              return;
+            }
+            console.warn(
+              "Sharing data URL failed, falling back to manual save",
+              urlShareErr
+            );
+          }
         }
       }
 
-      downloadBlob(blob, filename);
-      const message = navigator.share
-        ? "Sharing failed on this device. Image downloaded instead."
-        : "Share is not supported on this device. Image downloaded instead.";
-      alert(message);
+      const fallbackMessage = navigator.share
+        ? "Sharing failed on this device. Save the opened image to add it to your camera roll."
+        : "Share is not supported on this device. Save the opened image to add it to your camera roll.";
+      saveToDevice(blob, dataUrl, filename, fallbackMessage);
     } catch (err) {
       if (err.name === "AbortError") {
         console.info("Share cancelled by user");
       } else {
         if (blob) {
-          downloadBlob(blob, filename);
+          const fallbackDataUrl =
+            dataUrl || (window.URL ? window.URL.createObjectURL(blob) : "");
+          if (fallbackDataUrl) {
+            saveToDevice(
+              blob,
+              fallbackDataUrl,
+              filename,
+              "Sharing failed, but the image is available to save manually."
+            );
+            if (!dataUrl && window.URL && fallbackDataUrl.startsWith("blob:")) {
+              window.URL.revokeObjectURL(fallbackDataUrl);
+            }
+          } else {
+            downloadBlob(blob, filename);
+          }
         }
         console.error("Failed to share image:", err);
-        alert("Sharing failed, but the image has been downloaded instead.");
+        if (!isMobileDevice()) {
+          alert("Sharing failed, but the image has been downloaded instead.");
+        }
       }
     } finally {
       setSharing(false);
