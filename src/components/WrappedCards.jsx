@@ -110,72 +110,24 @@ function WrappedCards({ username, data, onReset }) {
     try {
       const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
       const blob = await generateImageFromBackend();
-      const imageUrl = URL.createObjectURL(blob);
 
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-      if (isIOS) {
-        // For iOS, open in new tab so user can long-press to save
-        const newTab = window.open();
-        if (newTab) {
-          newTab.document.write(`
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>${filename}</title>
-                <style>
-                  body { 
-                    margin: 0; 
-                    padding: 20px; 
-                    background: #000; 
-                    display: flex; 
-                    flex-direction: column; 
-                    align-items: center; 
-                    justify-content: center; 
-                    min-height: 100vh; 
-                    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-                  }
-                  img { 
-                    max-width: 100%; 
-                    height: auto; 
-                    display: block; 
-                    border-radius: 8px;
-                    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-                  }
-                  .instructions { 
-                    color: #fff; 
-                    text-align: center; 
-                    margin-top: 24px; 
-                    padding: 16px;
-                    background: rgba(255,255,255,0.1);
-                    border-radius: 12px;
-                    font-size: 16px;
-                    line-height: 1.6;
-                  }
-                  .instructions strong { 
-                    display: block; 
-                    margin-bottom: 8px; 
-                    font-size: 18px;
-                    color: #4facfe;
-                  }
-                </style>
-              </head>
-              <body>
-                <img src="${imageUrl}" alt="${filename}" />
-                <div class="instructions">
-                  <strong>📲 How to Save:</strong>
-                  Tap and hold the image above, then select<br>"Add to Photos" or "Save Image"
-                </div>
-              </body>
-            </html>
-          `);
-          newTab.document.close();
-        } else {
-          alert("Please enable popups to save images.");
-        }
+      // Try to use native share API first (works on iOS without popups)
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({
+          files: [new File([blob], filename, { type: "image/png" })],
+        })
+      ) {
+        const file = new File([blob], filename, { type: "image/png" });
+        await navigator.share({
+          files: [file],
+          title: "2025 BGG Wrapped",
+          text: `My 2025 Board Game Wrapped - Card ${currentCard + 1}`,
+        });
       } else {
-        // Desktop/Android - direct download
+        // Desktop fallback - direct download
+        const imageUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = imageUrl;
         link.download = filename;
@@ -185,51 +137,13 @@ function WrappedCards({ username, data, onReset }) {
         URL.revokeObjectURL(imageUrl);
       }
     } catch (err) {
-      console.error("Failed to save image:", err);
-      alert("Failed to save image: " + (err.message || "Unknown error"));
+      // User cancelled or error occurred
+      if (err.name !== "AbortError") {
+        console.error("Failed to save image:", err);
+        alert("Failed to save image: " + (err.message || "Unknown error"));
+      }
     } finally {
       setDownloading(false);
-    }
-  };
-
-  const handleShare = async () => {
-    setSharing(true);
-    const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
-
-    try {
-      const blob = await generateImageFromBackend();
-      const file = new File([blob], filename, { type: "image/png" });
-
-      // Check if Web Share API is available and supports files
-      if (
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({ files: [file] })
-      ) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: `${username}'s 2025 Board Game Wrapped`,
-            text: "Check out my 2025 board game stats!",
-          });
-          return;
-        } catch (shareErr) {
-          if (shareErr?.name === "AbortError") {
-            return;
-          }
-          console.error("Share failed:", shareErr);
-          alert("Share failed. Please use the Save Image button.");
-        }
-      } else {
-        alert(
-          "Share is not supported on this device. Use the Save Image button."
-        );
-      }
-    } catch (err) {
-      console.error("Failed to prepare image:", err);
-      alert("Failed to prepare image for sharing. Please try again.");
-    } finally {
-      setSharing(false);
     }
   };
 
@@ -260,10 +174,6 @@ function WrappedCards({ username, data, onReset }) {
 
       {/* Top header with username and close button */}
       <div className="story-header">
-        <div className="story-user">
-          <div className="user-avatar">🎲</div>
-          <span className="user-name">{username}</span>
-        </div>
         <button className="close-button" onClick={onReset} title="New User">
           ✕
         </button>
@@ -271,33 +181,41 @@ function WrappedCards({ username, data, onReset }) {
 
       {/* Main card viewer */}
       <div className="card-viewer">
-        {/* Top tap navigation areas */}
-        <div
-          className="tap-area tap-left"
+        {/* Navigation buttons */}
+        <button
+          className="nav-button nav-button-left"
           onClick={handlePrev}
-          style={{ visibility: currentCard > 0 ? "visible" : "hidden" }}
-        />
-        <div
-          className="tap-area tap-right"
+          disabled={currentCard === 0}
+          aria-label="Previous card"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button
+          className="nav-button nav-button-right"
           onClick={handleNext}
-          style={{
-            visibility: currentCard < totalCards - 1 ? "visible" : "hidden",
-          }}
-        />
-
-        {/* Bottom tap navigation areas */}
-        <div
-          className="tap-area tap-left bottom"
-          onClick={handlePrev}
-          style={{ visibility: currentCard > 0 ? "visible" : "hidden" }}
-        />
-        <div
-          className="tap-area tap-right bottom"
-          onClick={handleNext}
-          style={{
-            visibility: currentCard < totalCards - 1 ? "visible" : "hidden",
-          }}
-        />
+          disabled={currentCard >= totalCards - 1}
+          aria-label="Next card"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
 
         <div className="card-wrapper" id={`card-${currentCard}`}>
           <CurrentCardComponent

@@ -8,7 +8,7 @@ function MechanicsCard({ username, mechanics }) {
       <div className="card-content">
         <div className="card-header">
           <h2 className="year-label">✨ 2025 ✨</h2>
-          <h1 className="card-title">⚙️ Favorite Mechanics ⚙️</h1>
+          <h1 className="card-title">⚙️ Fav Mechanics ⚙️</h1>
           <p className="username">{username}</p>
         </div>
 

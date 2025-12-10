@@ -119,39 +119,52 @@
   align-items: center;
 }
 
-/* Tap navigation areas - only in header/footer zones to allow scrolling */
-.tap-area {
+/* Navigation arrow buttons */
+.nav-button {
   position: absolute;
-  width: 40%;
-  z-index: 50;
+  bottom: calc(max(env(safe-area-inset-bottom), 20px) + 100px);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 150;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
 }
 
-.tap-area:active {
-  background: rgba(255, 255, 255, 0.05);
+.nav-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
-.tap-left {
-  left: 0;
+.nav-button:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
-.tap-right {
-  right: 0;
+.nav-button:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Make tap areas larger and easier to hit */
-.tap-area {
-  top: 0;
-  height: 15%;
+.nav-button-left {
+  left: max(env(safe-area-inset-left), 20px);
 }
 
-/* Bottom tap areas */
-.tap-area.bottom {
-  top: auto;
-  bottom: 0;
-  height: 15%;
+.nav-button-right {
+  right: max(env(safe-area-inset-right), 20px);
+}
+
+.nav-button svg {
+  width: 24px;
+  height: 24px;
 }
 
 .card-wrapper {
