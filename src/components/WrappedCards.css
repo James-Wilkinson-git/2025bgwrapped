@@ -278,6 +278,37 @@
   }
 }
 
+/* Show UI button (visible when UI is hidden) */
+.show-ui-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 200;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.show-ui-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.show-ui-button:active {
+  transform: scale(0.95);
+}
+
 .card-export-clone::before,
 .card-export-clone::after,
 .card-export-clone *::before,
