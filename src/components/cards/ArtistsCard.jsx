@@ -23,9 +23,8 @@ function ArtistsCard({ username, artists }) {
             </div>
           ))}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

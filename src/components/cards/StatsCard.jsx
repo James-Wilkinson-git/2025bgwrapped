@@ -39,9 +39,8 @@ function StatsCard({ username, stats }) {
               </div>
             )}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

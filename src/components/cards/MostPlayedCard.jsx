@@ -51,9 +51,8 @@ function MostPlayedCard({ username, games }) {
             </div>
           ))}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

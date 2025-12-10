@@ -54,8 +54,8 @@ function CommunityCard({ games }) {
             </div>
           ))}
         </div>
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

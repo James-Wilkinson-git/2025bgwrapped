@@ -23,9 +23,8 @@ function PublishersCard({ username, publishers }) {
             </div>
           ))}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

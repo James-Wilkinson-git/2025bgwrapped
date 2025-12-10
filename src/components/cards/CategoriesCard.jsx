@@ -23,9 +23,8 @@ function CategoriesCard({ username, categories }) {
             </div>
           ))}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

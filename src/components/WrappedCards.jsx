@@ -8,6 +8,7 @@ import PublishersCard from "./cards/PublishersCard";
 import DesignersCard from "./cards/DesignersCard";
 import ArtistsCard from "./cards/ArtistsCard";
 import CommunityCard from "./cards/CommunityCard";
+import CardFooter from "./cards/CardFooter";
 
 function WrappedCards({ username, data, onReset }) {
   const [currentCard, setCurrentCard] = useState(0);

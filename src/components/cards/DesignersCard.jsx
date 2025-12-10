@@ -23,9 +23,8 @@ function DesignersCard({ username, designers }) {
             </div>
           ))}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }

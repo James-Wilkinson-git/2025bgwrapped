@@ -23,9 +23,8 @@ function MechanicsCard({ username, mechanics }) {
             </div>
           ))}
         </div>
-
-        <CardFooter />
       </div>
+      <CardFooter />
     </div>
   );
 }
