@@ -141,17 +141,17 @@
   right: 0;
 }
 
-/* Only make tap areas in header region to allow content scrolling */
+/* Make tap areas larger and easier to hit */
 .tap-area {
   top: 0;
-  height: 80px;
+  height: 15%;
 }
 
-/* Add bottom tap areas */
+/* Bottom tap areas */
 .tap-area.bottom {
   top: auto;
   bottom: 0;
-  height: 100px;
+  height: 15%;
 }
 
 .card-wrapper {

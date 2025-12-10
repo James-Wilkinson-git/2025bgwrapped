@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./WrappedCards.css";
 import StatsCard from "./cards/StatsCard";
 import MostPlayedCard from "./cards/MostPlayedCard";
 import MechanicsCard from "./cards/MechanicsCard";
 import CategoriesCard from "./cards/CategoriesCard";
 import PublishersCard from "./cards/PublishersCard";
+import CommunityCard from "./cards/CommunityCard";
 
 function WrappedCards({ username, data, onReset }) {
   const [currentCard, setCurrentCard] = useState(0);
   const [downloading, setDownloading] = useState(false);
   const [sharing, setSharing] = useState(false);
+  const [communityGames, setCommunityGames] = useState([]);
+
+  // Fetch community popular games
+  useEffect(() => {
+    const fetchCommunityGames = async () => {
+      try {
+        const response = await fetch(
+          "https://bgg-app-backend-1.onrender.com/api/analytics/popular-games"
+        );
+        const result = await response.json();
+        setCommunityGames(result.popularGames || []);
+      } catch (error) {
+        console.error("Failed to fetch community games:", error);
+      }
+    };
+    fetchCommunityGames();
+  }, []);
 
   const cards = [
     { id: "stats", component: StatsCard, props: { stats: data.stats } },
@@ -33,6 +51,15 @@ function WrappedCards({ username, data, onReset }) {
       component: PublishersCard,
       props: { publishers: data.mostPlayed.topPublishers },
     },
+    ...(communityGames.length > 0
+      ? [
+          {
+            id: "community",
+            component: CommunityCard,
+            props: { games: communityGames },
+          },
+        ]
+      : []),
   ];
 
   // Generate image via backend API
@@ -46,6 +73,8 @@ function WrappedCards({ username, data, onReset }) {
       cardData = data.stats;
     } else if (cardType === "most-played") {
       cardData = data.mostPlayed.mostPlayed;
+    } else if (cardType === "community") {
+      cardData = communityGames;
     } else if (cardType === "mechanics") {
       cardData = data.mostPlayed.topMechanics;
     } else if (cardType === "categories") {
@@ -281,27 +310,6 @@ function WrappedCards({ username, data, onReset }) {
       {/* Bottom controls */}
       <div className="controls-wrapper">
         <div className="story-actions">
-          <button
-            type="button"
-            className="story-action-button"
-            onClick={handleShare}
-            disabled={sharing}
-            title="Share"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-              <polyline points="16 6 12 2 8 6" />
-              <line x1="12" y1="2" x2="12" y2="15" />
-            </svg>
-            <span>Share</span>
-          </button>
           <button
             type="button"
             className="story-action-button"
