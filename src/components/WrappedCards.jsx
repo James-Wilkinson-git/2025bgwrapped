@@ -106,29 +106,30 @@ function WrappedCards({ username, data, onReset }) {
   };
 
   const handleSaveImage = async () => {
+    if (downloading) return;
+
     setDownloading(true);
     try {
       const filename = `${username}-2025-wrapped-${currentCard + 1}.png`;
+
+      // Show immediate feedback
+      console.log("Starting image generation...");
+
       const blob = await generateImageFromBackend();
+
+      console.log("Image generated, size:", blob.size);
 
       // Check if we're on mobile
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       if (isMobile && navigator.share) {
         // Mobile: try share API (saves to Photos on iOS)
-        try {
-          const file = new File([blob], filename, { type: "image/png" });
-          await navigator.share({
-            files: [file],
-            title: "2025 BGG Wrapped",
-            text: `My 2025 Board Game Wrapped - Card ${currentCard + 1}`,
-          });
-        } catch (shareErr) {
-          // If share fails, fall back to download
-          if (shareErr.name !== "AbortError") {
-            throw shareErr;
-          }
-        }
+        const file = new File([blob], filename, { type: "image/png" });
+        await navigator.share({
+          files: [file],
+          title: "2025 BGG Wrapped",
+          text: `My 2025 Board Game Wrapped - Card ${currentCard + 1}`,
+        });
       } else {
         // Desktop: direct download
         const imageUrl = URL.createObjectURL(blob);
@@ -239,19 +240,39 @@ function WrappedCards({ username, data, onReset }) {
             disabled={downloading}
             title="Save"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            <span>Save</span>
+            {downloading ? (
+              <>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ animation: "spin 1s linear infinite" }}
+                >
+                  <circle cx="12" cy="12" r="10" opacity="0.25" />
+                  <path d="M12 2a10 10 0 0 1 10 10" />
+                </svg>
+                <span>Generating...</span>
+              </>
+            ) : (
+              <>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Save</span>
+              </>
+            )}
           </button>
         </div>
       </div>
