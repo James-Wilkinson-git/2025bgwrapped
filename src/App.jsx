@@ -18,7 +18,7 @@ function WrappedPage() {
     }
   }, [urlUsername]);
 
-  const handleFetchData = async (user) => {
+  const handleFetchData = async (user, forceRefresh = false) => {
     setLoading(true);
     setError("");
     setUsername(user);
@@ -29,6 +29,16 @@ function WrappedPage() {
     }
 
     try {
+      // If forceRefresh, always fetch plays from BGG
+      if (forceRefresh) {
+        const playsRes = await fetch(
+          `https://bgg-app-backend-1.onrender.com/api/plays/${user}?refetch=true`
+        );
+        if (!playsRes.ok) {
+          throw new Error("Failed to fetch plays data from BGG");
+        }
+        await playsRes.json();
+      }
       // Try to fetch analytics first to see if data exists
       const [statsRes, mostPlayedRes] = await Promise.all([
         fetch(
@@ -38,50 +48,42 @@ function WrappedPage() {
           `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
         ),
       ]);
-
       let stats = null;
       let mostPlayed = null;
-
       // If analytics data exists, use it
       if (statsRes.ok && mostPlayedRes.ok) {
         stats = await statsRes.json();
         mostPlayed = await mostPlayedRes.json();
-
         // Check if we actually have data
         if (stats.totalPlays > 0 || mostPlayed.mostPlayed?.length > 0) {
           setData({ stats, mostPlayed });
           return;
         }
       }
-
       // If no data exists, fetch plays from BGG first
-      const playsRes = await fetch(
-        `https://bgg-app-backend-1.onrender.com/api/plays/${user}`
-      );
-
-      if (!playsRes.ok) {
-        throw new Error("Failed to fetch plays data from BGG");
+      if (!forceRefresh) {
+        const playsRes = await fetch(
+          `https://bgg-app-backend-1.onrender.com/api/plays/${user}`
+        );
+        if (!playsRes.ok) {
+          throw new Error("Failed to fetch plays data from BGG");
+        }
+        await playsRes.json();
+        // Now fetch analytics again
+        const [newStatsRes, newMostPlayedRes] = await Promise.all([
+          fetch(
+            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
+          ),
+          fetch(
+            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
+          ),
+        ]);
+        if (!newStatsRes.ok || !newMostPlayedRes.ok) {
+          throw new Error("Failed to fetch analytics data");
+        }
+        stats = await newStatsRes.json();
+        mostPlayed = await newMostPlayedRes.json();
       }
-
-      await playsRes.json();
-
-      // Now fetch analytics again
-      const [newStatsRes, newMostPlayedRes] = await Promise.all([
-        fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
-        ),
-        fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
-        ),
-      ]);
-
-      if (!newStatsRes.ok || !newMostPlayedRes.ok) {
-        throw new Error("Failed to fetch analytics data");
-      }
-
-      stats = await newStatsRes.json();
-      mostPlayed = await newMostPlayedRes.json();
-
       setData({ stats, mostPlayed });
     } catch (err) {
       setError(
@@ -141,9 +143,10 @@ function WrappedPage() {
   // Helper to check if stats are truly empty
   function isStatsEmpty(stats, mostPlayed) {
     if (!stats || !mostPlayed) return true;
-    if (stats.totalPlays > 0) return false;
-    if (mostPlayed.mostPlayed && mostPlayed.mostPlayed.length > 0) return false;
-    return true;
+    if (typeof stats.totalPlays !== "number" || stats.totalPlays < 1)
+      return true;
+    if (!mostPlayed.mostPlayed || mostPlayed.mostPlayed.length < 1) return true;
+    return false;
   }
 
   return (
@@ -168,12 +171,7 @@ function WrappedPage() {
           <button onClick={() => handleFetchData(username)}>Retry</button>
         </div>
       ) : (
-        <WrappedCards
-          username={username}
-          data={data}
-          onReset={handleReset}
-          onRefresh={handleRefreshData}
-        />
+        <WrappedCards username={username} data={data} onReset={handleReset} />
       )}
     </div>
   );

@@ -25,21 +25,32 @@ function UsernameInput({ onSubmit, loading, error }) {
             <p className="loading-subtext">This may take a while</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="input-form">
-            <input
-              type="text"
-              value={username}
-              autoCapitalize="none"
-              autoComplete="off"
-              autoCorrect="off"
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter BGG username"
-              className="username-input"
-            />
-            <button type="submit" className="submit-button">
-              Generate Wrapped
+          <>
+            <form onSubmit={handleSubmit} className="input-form">
+              <input
+                type="text"
+                value={username}
+                autoCapitalize="none"
+                autoComplete="off"
+                autoCorrect="off"
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter BGG username"
+                className="username-input"
+              />
+              <button type="submit" className="submit-button">
+                Generate Wrapped
+              </button>
+            </form>
+            <button
+              type="button"
+              className="refresh-button"
+              style={{ marginTop: "10px" }}
+              onClick={() => username.trim() && onSubmit(username.trim(), true)}
+              title="Force Refresh From BGG"
+            >
+              Refresh From BGG (this takes a while)
             </button>
-          </form>
+          </>
         )}
 
         {error && <p className="error-message">{error}</p>}
