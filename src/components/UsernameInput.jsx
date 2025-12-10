@@ -3,12 +3,11 @@ import "./UsernameInput.css";
 
 function UsernameInput({ onSubmit, loading, error }) {
   const [username, setUsername] = useState("");
-  const [excludeBGA, setExcludeBGA] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username.trim()) {
-      onSubmit(username.trim(), excludeBGA);
+      onSubmit(username.trim());
     }
   };
 
@@ -29,19 +28,13 @@ function UsernameInput({ onSubmit, loading, error }) {
             <input
               type="text"
               value={username}
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter BGG username"
               className="username-input"
             />
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={excludeBGA}
-                onChange={(e) => setExcludeBGA(e.target.checked)}
-                className="checkbox-input"
-              />
-              <span>Exclude Board Game Arena plays</span>
-            </label>
             <button type="submit" className="submit-button">
               Generate Wrapped
             </button>

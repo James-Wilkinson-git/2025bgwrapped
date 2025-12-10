@@ -1,13 +1,13 @@
 .wrapped-card {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 3rem 2rem;
+  padding: 1em;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(12px, min(2.75vw, 4.5vh), 24px);
 }
 
 .wrapped-card::before {
@@ -24,7 +24,6 @@
     rgba(255, 255, 255, 0.08) 50%,
     transparent 70%
   );
-  animation: floatDramatic 8s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -42,91 +41,49 @@
     rgba(255, 255, 255, 0.06) 50%,
     transparent 70%
   );
-  animation: floatDramatic 10s ease-in-out infinite reverse;
   pointer-events: none;
-}
-
-@keyframes floatDramatic {
-  0% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  25% {
-    transform: translate(80px, -100px) rotate(20deg) scale(1.3);
-  }
-  50% {
-    transform: translate(120px, 80px) rotate(35deg) scale(0.8);
-  }
-  75% {
-    transform: translate(-80px, 100px) rotate(-25deg) scale(1.2);
-  }
-  100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
 }
 
 /* Gradient backgrounds */
 .gradient-purple {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a4a9f 100%);
   background-size: 600% 600%;
-  animation: gradientMove 6s ease-in-out infinite;
 }
 
 .gradient-blue {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #0ab7e0 100%);
   background-size: 600% 600%;
-  animation: gradientMove 6s ease-in-out infinite;
 }
 
 .gradient-green {
   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 50%, #2ec9ad 100%);
   background-size: 600% 600%;
-  animation: gradientMove 6s ease-in-out infinite;
 }
 
 .gradient-orange {
   background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #ffa751 100%);
   background-size: 600% 600%;
-  animation: gradientMove 6s ease-in-out infinite;
 }
 
 .gradient-pink {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #d946a6 100%);
   background-size: 600% 600%;
-  animation: gradientMove 6s ease-in-out infinite;
-}
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 0%;
-  }
-  25% {
-    background-position: 100% 50%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-  75% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
 }
 
 /* Card sections */
 .card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   height: 100%;
-  gap: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   z-index: 1;
+  scrollbar-gutter: stable both-edges;
 }
 
 .card-header {
   text-align: center;
   animation: slideDown 0.6s ease-out;
+  padding-top: 0.5em;
 }
 
 @keyframes slideDown {
@@ -141,16 +98,16 @@
 }
 
 .year-label {
-  font-size: 1rem;
+  font-size: 0.75em;
   font-weight: 900;
-  letter-spacing: 0.1rem;
-  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5em;
   opacity: 1;
   text-transform: uppercase;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   display: inline-block;
-  padding: 0.5rem 2rem;
+  padding: 0.5em 2em;
   border-radius: 50px;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.4);
@@ -169,10 +126,10 @@
 }
 
 .card-title {
-  font-size: 2.2rem;
+  font-size: 2em;
   font-weight: 900;
   line-height: 1.1;
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
   text-align: center;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.03em;
@@ -195,7 +152,7 @@
 }
 
 .username {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   font-weight: 700;
   opacity: 1;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -219,14 +176,15 @@
 .stats-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.5em;
   padding: 0;
+  margin: 1em 0;
   flex: 0;
 }
 
 .stat-item {
   text-align: center;
-  padding: 1.5rem;
+  padding: 1.5em;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
@@ -276,10 +234,10 @@
 }
 
 .stat-value {
-  font-size: 3.5rem;
+  font-size: 3.5em;
   font-weight: 900;
   line-height: 1;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
   color: #1a1a2e;
   text-shadow: none;
   position: relative;
@@ -299,22 +257,22 @@
 }
 
 .stat-label {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   font-weight: 700;
   color: #2a2a3e;
   text-transform: uppercase;
-  letter-spacing: 0.05rem;
+  letter-spacing: 0.05em;
   position: relative;
   text-shadow: none;
 }
 
 .stat-sublabel {
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 500;
   color: #3a3a4e;
   text-transform: none;
   letter-spacing: 0;
-  margin-top: 0.5rem;
+  margin-top: 0.5em;
   position: relative;
 }
 
@@ -322,16 +280,16 @@
 .games-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem 0;
+  gap: 0.75em;
+  padding: 1em 0;
   flex: 1;
 }
 
 .game-item {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  padding: 0.75rem 1rem;
+  gap: 1.2em;
+  padding: 0.75em 1em;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
@@ -394,7 +352,7 @@
 }
 
 .game-rank {
-  font-size: 2.2rem;
+  font-size: 2.2em;
   font-weight: 900;
   min-width: 45px;
   text-align: center;
@@ -427,10 +385,10 @@
 }
 
 .game-name {
-  font-size: 1.4rem;
+  font-size: 1.4em;
   font-weight: 800;
   color: #1a1a2e;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.3em;
   line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -442,7 +400,7 @@
 }
 
 .game-stats {
-  font-size: 1.1rem;
+  font-size: 1.1em;
   color: #3a3a4e;
   font-weight: 600;
   text-shadow: none;
@@ -452,8 +410,8 @@
 .games-showcase {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  padding: 0.5rem 0;
+  gap: 0.6em;
+  padding: 0.5em 0;
   flex: 1;
 }
 
@@ -489,13 +447,13 @@
 
 .game-card-rank {
   position: absolute;
-  top: 0.4rem;
-  left: 0.4rem;
+  top: 0.4em;
+  left: 0.4em;
   background: rgba(0, 0, 0, 0.6);
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.1em;
   font-weight: 900;
-  padding: 0.3rem 0.7rem;
+  padding: 0.3em 0.7em;
   border-radius: 8px;
   z-index: 2;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -503,8 +461,7 @@
 }
 
 .game-card-image-wrapper {
-  width: 115px;
-  height: 115px;
+  height: 100px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -519,11 +476,11 @@
 
 .game-card-content {
   flex: 1;
-  padding: 1rem 1.2rem;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.5em;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.15) 0%,
@@ -532,7 +489,7 @@
 }
 
 .game-card-name {
-  font-size: 1.3rem;
+  font-size: 1.3em;
   font-weight: 900;
   color: #1a1a2e;
   line-height: 1.2;
@@ -546,7 +503,7 @@
 }
 
 .game-card-plays {
-  font-size: 1.05rem;
+  font-size: 1.05em;
   font-weight: 700;
   color: #3a3a4e;
   text-shadow: none;
@@ -556,22 +513,23 @@
 .tags-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1em;
   padding: 0;
+  margin: 1em 0;
   justify-content: center;
 }
 
 .tag-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
+  gap: 0.5em;
+  padding: 0.5em;
   background: rgba(255, 255, 255, 0.75);
   color: #1a1a2e;
   backdrop-filter: blur(10px);
   border-radius: 50px;
   border: 3px solid rgba(255, 255, 255, 0.5);
-  font-size: 1.3rem;
+  font-size: 1em;
   font-weight: 800;
   position: relative;
   animation: popIn 0.4s ease-out backwards;
@@ -634,9 +592,9 @@
 .tag-count {
   background: rgba(26, 26, 46, 0.15);
   color: #1a1a2e;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25em 0.75em;
   border-radius: 20px;
-  font-size: 1.1rem;
+  font-size: 1.1em;
   font-weight: 900;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   animation: glow 2s ease-in-out infinite;
@@ -656,13 +614,14 @@
 .card-footer {
   color: #3a3a4e;
   text-align: center;
-  padding-top: 1rem;
   margin-top: auto;
+  bottom: 0;
+  position: absolute;
 }
 
 .footer-text {
-  font-size: 1.2rem;
+  font-size: 1.2em;
   font-weight: 700;
   opacity: 1;
-  letter-spacing: -0.02rem;
+  letter-spacing: -1px;
 }
