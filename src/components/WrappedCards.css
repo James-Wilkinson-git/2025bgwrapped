@@ -51,7 +51,11 @@
   align-items: center;
   padding: max(env(safe-area-inset-top), 8px) 12px 8px;
   padding-top: calc(max(env(safe-area-inset-top), 8px) + 20px);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6) 0%,
+    transparent 100%
+  );
   z-index: 150;
 }
 
@@ -115,15 +119,14 @@
   align-items: center;
 }
 
-/* Tap navigation areas */
+/* Tap navigation areas - only in header/footer zones to allow scrolling */
 .tap-area {
   position: absolute;
-  top: 0;
-  bottom: 0;
   width: 40%;
   z-index: 50;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .tap-area:active {
@@ -136,6 +139,19 @@
 
 .tap-right {
   right: 0;
+}
+
+/* Only make tap areas in header region to allow content scrolling */
+.tap-area {
+  top: 0;
+  height: 80px;
+}
+
+/* Add bottom tap areas */
+.tap-area.bottom {
+  top: auto;
+  bottom: 0;
+  height: 100px;
 }
 
 .card-wrapper {
@@ -184,7 +200,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.4) 70%,
+    transparent 100%
+  );
   padding: 16px;
   padding-bottom: max(env(safe-area-inset-bottom), 16px);
   z-index: 100;

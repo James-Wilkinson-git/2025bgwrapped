@@ -242,7 +242,7 @@ function WrappedCards({ username, data, onReset }) {
 
       {/* Main card viewer */}
       <div className="card-viewer">
-        {/* Tap navigation areas */}
+        {/* Top tap navigation areas */}
         <div
           className="tap-area tap-left"
           onClick={handlePrev}
@@ -250,6 +250,20 @@ function WrappedCards({ username, data, onReset }) {
         />
         <div
           className="tap-area tap-right"
+          onClick={handleNext}
+          style={{
+            visibility: currentCard < totalCards - 1 ? "visible" : "hidden",
+          }}
+        />
+
+        {/* Bottom tap navigation areas */}
+        <div
+          className="tap-area tap-left bottom"
+          onClick={handlePrev}
+          style={{ visibility: currentCard > 0 ? "visible" : "hidden" }}
+        />
+        <div
+          className="tap-area tap-right bottom"
           onClick={handleNext}
           style={{
             visibility: currentCard < totalCards - 1 ? "visible" : "hidden",
