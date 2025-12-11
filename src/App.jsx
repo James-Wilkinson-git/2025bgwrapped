@@ -23,10 +23,7 @@ function WrappedPage() {
     setError("");
     setUsername(user);
 
-    // Update URL when fetching data
-    if (!urlUsername) {
-      navigate(`/${user}`);
-    }
+    // Only update URL after successful fetch
 
     try {
       // If forceRefresh, always fetch plays from BGG
@@ -57,6 +54,9 @@ function WrappedPage() {
         // Check if we actually have data
         if (stats.totalPlays > 0 || mostPlayed.mostPlayed?.length > 0) {
           setData({ stats, mostPlayed });
+          if (!urlUsername) {
+            navigate(`/${user}`);
+          }
           return;
         }
       }
@@ -85,6 +85,9 @@ function WrappedPage() {
         mostPlayed = await newMostPlayedRes.json();
       }
       setData({ stats, mostPlayed });
+      if (!urlUsername) {
+        navigate(`/${user}`);
+      }
     } catch (err) {
       setError(
         err.message || "Failed to fetch data. Make sure the backend is running."
