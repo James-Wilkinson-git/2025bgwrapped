@@ -48,6 +48,16 @@ function UsernameInput({ onSubmit, loading, error }) {
           <button type="submit" className="submit-button">
             Generate Wrapped
           </button>
+          <div class="bgstats">
+            If you use <b>BGStats</b> you will need to make sure your connection
+            to BGG is still working, many reports that it wasn't syncing. Click
+            the Cog in BGStats, then Under Syncing, Board Game Geek, make sure
+            you are logged in, then under Sync Settings, enable auto post, I
+            also recommend you anonymize locations and players if you value your
+            privacy as this will be public on bgg and therefore here as well.
+            Then go to your plays, click the small cog, at the bottom select all
+            unposted plays, then select share, post or update to BGG
+          </div>
         </form>
 
         {error && <p className="error-message">{error}</p>}
