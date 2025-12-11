@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, useParams, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import "./App.css";
 import UsernameInput from "./components/UsernameInput";
 import WrappedCards from "./components/WrappedCards";
@@ -7,29 +13,41 @@ import WrappedCards from "./components/WrappedCards";
 function WrappedPage() {
   const { username: urlUsername } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [username, setUsername] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [excludeBGA, setExcludeBGA] = useState(false);
 
   useEffect(() => {
     if (urlUsername) {
-      handleFetchData(urlUsername);
+      const excludeFromUrl = searchParams.get("excludeBGA") === "true";
+      setExcludeBGA(excludeFromUrl);
+      handleFetchData(urlUsername, false, excludeFromUrl);
     }
-  }, [urlUsername]);
+  }, [urlUsername, searchParams]);
 
-  const handleFetchData = async (user, forceRefresh = false) => {
+  const handleFetchData = async (
+    user,
+    forceRefresh = false,
+    exclude = false
+  ) => {
     setLoading(true);
     setError("");
     setUsername(user);
+    setExcludeBGA(exclude);
 
     // Only update URL after successful fetch
 
     try {
+      const excludeParam = exclude ? "&excludeBGA=true" : "";
+      const excludeParamNoQ = exclude ? "?excludeBGA=true" : "";
+
       // If forceRefresh, always fetch plays from BGG
       if (forceRefresh) {
         const playsRes = await fetch(
-          `https://bgg-app-backend-1.onrender.com/api/plays/${user}?refetch=true`
+          `https://bgg-app-backend-1.onrender.com/api/plays/${user}?refetch=true${excludeParam}`
         );
         if (!playsRes.ok) {
           throw new Error("Failed to fetch plays data from BGG");
@@ -39,10 +57,10 @@ function WrappedPage() {
       // Try to fetch analytics first to see if data exists
       const [statsRes, mostPlayedRes] = await Promise.all([
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParamNoQ}`
         ),
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParamNoQ}`
         ),
       ]);
       let stats = null;
@@ -55,7 +73,7 @@ function WrappedPage() {
         if (stats.totalPlays > 0 || mostPlayed.mostPlayed?.length > 0) {
           setData({ stats, mostPlayed });
           if (!urlUsername) {
-            navigate(`/${user}`);
+            navigate(`/${user}${exclude ? "?excludeBGA=true" : ""}`);
           }
           return;
         }
@@ -63,7 +81,7 @@ function WrappedPage() {
       // If no data exists, fetch plays from BGG first
       if (!forceRefresh) {
         const playsRes = await fetch(
-          `https://bgg-app-backend-1.onrender.com/api/plays/${user}`
+          `https://bgg-app-backend-1.onrender.com/api/plays/${user}${excludeParamNoQ}`
         );
         if (!playsRes.ok) {
           throw new Error("Failed to fetch plays data from BGG");
@@ -72,10 +90,10 @@ function WrappedPage() {
         // Now fetch analytics again
         const [newStatsRes, newMostPlayedRes] = await Promise.all([
           fetch(
-            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats`
+            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParamNoQ}`
           ),
           fetch(
-            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played`
+            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParamNoQ}`
           ),
         ]);
         if (!newStatsRes.ok || !newMostPlayedRes.ok) {
@@ -86,7 +104,7 @@ function WrappedPage() {
       }
       setData({ stats, mostPlayed });
       if (!urlUsername) {
-        navigate(`/${user}`);
+        navigate(`/${user}${exclude ? "?excludeBGA=true" : ""}`);
       }
     } catch (err) {
       setError(
@@ -172,6 +190,7 @@ function WrappedPage() {
           onSubmit={handleFetchData}
           loading={loading}
           error={error}
+          excludeBGA={excludeBGA}
         />
       ) : isStatsEmpty(data.stats, data.mostPlayed) ? (
         <div className="no-plays-message">

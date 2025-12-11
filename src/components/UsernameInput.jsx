@@ -2,14 +2,15 @@ import { useState } from "react";
 import "./UsernameInput.css";
 import bggLogo from "../bgglogo.png";
 
-function UsernameInput({ onSubmit, loading, error }) {
+function UsernameInput({ onSubmit, error, excludeBGA: initialExcludeBGA }) {
   const [username, setUsername] = useState("");
   const [forceRefresh, setForceRefresh] = useState(false);
+  const [excludeBGA, setExcludeBGA] = useState(initialExcludeBGA || false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username.trim()) {
-      onSubmit(username.trim(), forceRefresh);
+      onSubmit(username.trim(), forceRefresh, excludeBGA);
     }
   };
 
@@ -32,8 +33,6 @@ function UsernameInput({ onSubmit, loading, error }) {
           />
           <label
             style={{
-              display: "flex",
-              alignItems: "center",
               margin: "10px 0",
             }}
           >
@@ -44,6 +43,19 @@ function UsernameInput({ onSubmit, loading, error }) {
               style={{ marginRight: "8px" }}
             />
             Force refresh from BGG (takes a while)
+          </label>
+          <label
+            style={{
+              margin: "10px 0",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={excludeBGA}
+              onChange={(e) => setExcludeBGA(e.target.checked)}
+              style={{ marginRight: "8px" }}
+            />
+            Exclude Board Game Arena plays (experimental)
           </label>
           <button type="submit" className="submit-button">
             Generate Wrapped
