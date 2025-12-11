@@ -155,8 +155,17 @@ function WrappedPage() {
   return (
     <div className="app">
       {loading ? (
-        <div className="loading-indicator">
-          <span>Loading your plays and stats...</span>
+        <div className="username-input-container">
+          <div className="username-input-card">
+            <h1 className="title">🎲 2025 BG Wrapped</h1>
+            <p className="subtitle">See your year in board games</p>
+            <div className="loading-container">
+              <div className="spinner"></div>
+              <p className="loading-text">Fetching your plays from BGG...</p>
+              <p className="loading-subtext">This may take a while</p>
+            </div>
+            {/* Optionally show error here if needed */}
+          </div>
         </div>
       ) : !data ? (
         <UsernameInput
