@@ -221,25 +221,6 @@ function WrappedCards({ username, data, onReset, onRefresh }) {
               </svg>
               <span>Hide UI</span>
             </button>
-            <button
-              type="button"
-              className="story-action-button"
-              onClick={onRefresh}
-              title="Refresh Data"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <polyline points="23 4 23 10 17 10" />
-                <path d="M1 20a11 11 0 0 1 17.9-7.9L23 10" />
-              </svg>
-              <span>Refresh</span>
-            </button>
           </div>
         </div>
       )}

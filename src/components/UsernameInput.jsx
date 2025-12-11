@@ -4,11 +4,12 @@ import bggLogo from "../bgglogo.png";
 
 function UsernameInput({ onSubmit, loading, error }) {
   const [username, setUsername] = useState("");
+  const [forceRefresh, setForceRefresh] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username.trim()) {
-      onSubmit(username.trim());
+      onSubmit(username.trim(), forceRefresh);
     }
   };
 
@@ -37,19 +38,25 @@ function UsernameInput({ onSubmit, loading, error }) {
                 placeholder="Enter BGG username"
                 className="username-input"
               />
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  margin: "10px 0",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={forceRefresh}
+                  onChange={(e) => setForceRefresh(e.target.checked)}
+                  style={{ marginRight: "8px" }}
+                />
+                Force refresh from BGG (takes a while)
+              </label>
               <button type="submit" className="submit-button">
                 Generate Wrapped
               </button>
             </form>
-            <button
-              type="button"
-              className="refresh-button"
-              style={{ marginTop: "10px" }}
-              onClick={() => username.trim() && onSubmit(username.trim(), true)}
-              title="Force Refresh From BGG"
-            >
-              Refresh From BGG (this takes a while)
-            </button>
           </>
         )}
 
