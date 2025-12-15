@@ -73,12 +73,18 @@ function UsernameInput({ onSubmit, error, excludeBGA: initialExcludeBGA }) {
         </form>
 
         {error && <p className="error-message">{error}</p>}
-        <img
-          src={bggLogo}
-          alt="Powered by BGG"
-          className="bgg-logo"
-          style={{ maxWidth: "200px", marginTop: "20px" }}
-        />
+        <a
+          href="https://boardgamegeek.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={bggLogo}
+            alt="Powered by BGG"
+            className="bgg-logo"
+            style={{ maxWidth: "200px", marginTop: "20px" }}
+          />
+        </a>
       </div>
     </div>
   );
