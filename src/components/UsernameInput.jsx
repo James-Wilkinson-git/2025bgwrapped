@@ -55,7 +55,7 @@ function UsernameInput({ onSubmit, error, excludeBGA: initialExcludeBGA }) {
               onChange={(e) => setExcludeBGA(e.target.checked)}
               style={{ marginRight: "8px" }}
             />
-            Exclude Board Game Arena plays (experimental)
+            Exclude digital plays (BGA, Steam, Apps, Yucatta, Tabletopia)
           </label>
           <button type="submit" className="submit-button">
             Generate Wrapped
