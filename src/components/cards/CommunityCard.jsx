@@ -33,7 +33,7 @@ function CommunityCard({ games }) {
           <p className="username">Global Plays Submitted</p>
         </div>
         <div className="games-showcase">
-          {games.slice(0, 5).map((game, index) => (
+          {games.slice(0, 10).map((game, index) => (
             <div key={game._id} className="game-card">
               <div className="game-card-rank">#{index + 1}</div>
               <div className="game-card-image-wrapper">
