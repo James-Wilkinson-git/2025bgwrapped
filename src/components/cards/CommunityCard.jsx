@@ -30,6 +30,7 @@ function CommunityCard({ games }) {
         <div className="card-header">
           <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
           <h1 className="card-title">🌍 User Favs 🌍</h1>
+          <p className="username">Global Plays Submitted</p>
         </div>
         <div className="games-showcase">
           {games.slice(0, 5).map((game, index) => (
