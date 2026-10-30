@@ -16,7 +16,7 @@ function CategoriesCard({ username, categories }) {
         </div>
 
         <div className="tags-container">
-          <div key={index} className="tag-item">
+          <div key="category-header" className="tag-item">
             <span className="tag-text">Category</span>
             <span className="tag-count"># of Plays</span>
           </div>

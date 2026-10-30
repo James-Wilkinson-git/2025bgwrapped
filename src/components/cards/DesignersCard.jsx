@@ -16,7 +16,7 @@ function DesignersCard({ username, designers }) {
         </div>
 
         <div className="tags-container">
-          <div key={index} className="tag-item">
+          <div key="designer-header" className="tag-item">
             <span className="tag-text">Designer</span>
             <span className="tag-count"># of Plays</span>
           </div>
