@@ -16,6 +16,10 @@ function CategoriesCard({ username, categories }) {
         </div>
 
         <div className="tags-container">
+          <div key={index} className="tag-item">
+            <span className="tag-text">Category</span>
+            <span className="tag-count"># of Plays</span>
+          </div>
           {topCategories.map((item, index) => (
             <div key={index} className="tag-item">
               <span className="tag-text">{item.category}</span>

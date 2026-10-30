@@ -16,6 +16,10 @@ function PublishersCard({ username, publishers }) {
         </div>
 
         <div className="tags-container">
+          <div key={index} className="tag-item">
+            <span className="tag-text">Publisher</span>
+            <span className="tag-count"># of Plays</span>
+          </div>
           {topPublishers.map((item, index) => (
             <div key={index} className="tag-item">
               <span className="tag-text">{item.publisher}</span>

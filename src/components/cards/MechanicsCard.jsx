@@ -16,6 +16,10 @@ function MechanicsCard({ username, mechanics }) {
         </div>
 
         <div className="tags-container">
+          <div key={index} className="tag-item">
+            <span className="tag-text">Mechanic</span>
+            <span className="tag-count"># of Plays</span>
+          </div>
           {topMechanics.map((item, index) => (
             <div key={index} className="tag-item">
               <span className="tag-text">{item.mechanic}</span>
