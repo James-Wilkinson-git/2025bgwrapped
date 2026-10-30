@@ -47,8 +47,8 @@ function CommunityCard({ games }) {
               <div className="game-card-content">
                 <div className="game-card-name">{game.gameName}</div>
                 <div className="game-card-plays">
-                  🎯 {game.playCount} plays across {game.playerCount} different
-                  users
+                  🎯 {game.playCount} plays across {game.playerCount}
+                  gamers
                 </div>
               </div>
             </div>
