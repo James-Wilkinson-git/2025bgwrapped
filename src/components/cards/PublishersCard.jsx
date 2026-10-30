@@ -10,7 +10,7 @@ function PublishersCard({ username, publishers }) {
       <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 BG Wrapped✨</h2>
+          <h2 className="year-label">✨ 2026 BG Wrapped ✨</h2>
           <h1 className="card-title">📚 Top Publishers 📚</h1>
           <p className="username">{username}</p>
         </div>

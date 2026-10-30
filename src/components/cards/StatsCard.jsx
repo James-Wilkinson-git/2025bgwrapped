@@ -8,7 +8,7 @@ function StatsCard({ username, stats }) {
       <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
+          <h2 className="year-label">✨ 2026 BG Wrapped ✨</h2>
           <h1 className="card-title">🎲 Your Year in Games 🎲</h1>
           <p className="username">{username}</p>
         </div>
@@ -33,8 +33,8 @@ function StatsCard({ username, stats }) {
                   {stats.averageGameAge === 0
                     ? "Playing the hottest new releases! 🔥"
                     : stats.averageGameAge === 1
-                    ? "Playing games about 1 year old"
-                    : `Playing games about ${stats.averageGameAge} years old`}
+                      ? "Playing games about 1 year old"
+                      : `Playing games about ${stats.averageGameAge} years old`}
                 </div>
               </div>
             )}

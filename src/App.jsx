@@ -31,7 +31,7 @@ function WrappedPage() {
   const handleFetchData = async (
     user,
     forceRefresh = false,
-    exclude = false
+    exclude = false,
   ) => {
     setLoading(true);
     setError("");
@@ -47,7 +47,7 @@ function WrappedPage() {
       // If forceRefresh, always fetch plays from BGG
       if (forceRefresh) {
         const playsRes = await fetch(
-          `https://bgg-app-backend-1.onrender.com/api/plays/${user}?refetch=true${excludeParam}`
+          `https://bgg-app-backend-1.onrender.com/api/plays/${user}?refetch=true${excludeParam}`,
         );
         if (!playsRes.ok) {
           throw new Error("Failed to fetch plays data from BGG");
@@ -57,10 +57,10 @@ function WrappedPage() {
       // Try to fetch analytics first to see if data exists
       const [statsRes, mostPlayedRes] = await Promise.all([
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParamNoQ}`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParamNoQ}`,
         ),
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParamNoQ}`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParamNoQ}`,
         ),
       ]);
       let stats = null;
@@ -81,7 +81,7 @@ function WrappedPage() {
       // If no data exists, fetch plays from BGG first
       if (!forceRefresh) {
         const playsRes = await fetch(
-          `https://bgg-app-backend-1.onrender.com/api/plays/${user}${excludeParamNoQ}`
+          `https://bgg-app-backend-1.onrender.com/api/plays/${user}${excludeParamNoQ}`,
         );
         if (!playsRes.ok) {
           throw new Error("Failed to fetch plays data from BGG");
@@ -90,10 +90,10 @@ function WrappedPage() {
         // Now fetch analytics again
         const [newStatsRes, newMostPlayedRes] = await Promise.all([
           fetch(
-            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParamNoQ}`
+            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/stats${excludeParamNoQ}`,
           ),
           fetch(
-            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParamNoQ}`
+            `https://bgg-app-backend-1.onrender.com/api/analytics/${user}/most-played${excludeParamNoQ}`,
           ),
         ]);
         if (!newStatsRes.ok || !newMostPlayedRes.ok) {
@@ -108,7 +108,8 @@ function WrappedPage() {
       }
     } catch (err) {
       setError(
-        err.message || "Failed to fetch data. Make sure the backend is running."
+        err.message ||
+          "Failed to fetch data. Make sure the backend is running.",
       );
     } finally {
       setLoading(false);
@@ -122,7 +123,7 @@ function WrappedPage() {
     setError("");
     try {
       const playsRes = await fetch(
-        `https://bgg-app-backend-1.onrender.com/api/plays/${username}?refetch=true`
+        `https://bgg-app-backend-1.onrender.com/api/plays/${username}?refetch=true`,
       );
       if (!playsRes.ok) {
         throw new Error("Failed to fetch plays data from BGG");
@@ -131,10 +132,10 @@ function WrappedPage() {
       // Now fetch analytics again
       const [statsRes, mostPlayedRes] = await Promise.all([
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${username}/stats`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${username}/stats`,
         ),
         fetch(
-          `https://bgg-app-backend-1.onrender.com/api/analytics/${username}/most-played`
+          `https://bgg-app-backend-1.onrender.com/api/analytics/${username}/most-played`,
         ),
       ]);
       if (!statsRes.ok || !mostPlayedRes.ok) {
@@ -146,7 +147,7 @@ function WrappedPage() {
     } catch (err) {
       setError(
         err.message ||
-          "Failed to refresh data. Make sure the backend is running."
+          "Failed to refresh data. Make sure the backend is running.",
       );
     } finally {
       setLoading(false);
@@ -175,7 +176,7 @@ function WrappedPage() {
       {loading ? (
         <div className="username-input-container">
           <div className="username-input-card">
-            <h1 className="title">🎲 2025 BG Wrapped</h1>
+            <h1 className="title">🎲 2026 BG Wrapped</h1>
             <p className="subtitle">See your year in board games</p>
             <div className="loading-container">
               <div className="spinner"></div>

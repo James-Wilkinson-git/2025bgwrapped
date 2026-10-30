@@ -10,7 +10,7 @@ function MechanicsCard({ username, mechanics }) {
       <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
+          <h2 className="year-label">✨ 2026 BG Wrapped ✨</h2>
           <h1 className="card-title">⚙️ Fav Mechanics ⚙️</h1>
           <p className="username">{username}</p>
         </div>

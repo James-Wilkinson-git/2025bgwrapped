@@ -14,7 +14,7 @@ function CommunityCard({ games }) {
   const proxyImageUrl = (url) => {
     if (!url || url.startsWith("data:")) return url;
     return `https://bgg-app-backend-1.onrender.com/api/proxy-image?url=${encodeURIComponent(
-      url
+      url,
     )}`;
   };
 
@@ -28,7 +28,7 @@ function CommunityCard({ games }) {
       <CardWatermark />
       <div className="card-content">
         <div className="card-header">
-          <h2 className="year-label">✨ 2025 BG Wrapped ✨</h2>
+          <h2 className="year-label">✨ 2026 BG Wrapped ✨</h2>
           <h1 className="card-title">🌍 User Favs 🌍</h1>
           <p className="username">Global Plays Submitted</p>
         </div>

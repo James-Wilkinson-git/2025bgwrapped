@@ -17,7 +17,7 @@ function UsernameInput({ onSubmit, error, excludeBGA: initialExcludeBGA }) {
   return (
     <div className="username-input-container">
       <div className="username-input-card">
-        <h1 className="title">🎲 2025 BG Wrapped</h1>
+        <h1 className="title">🎲 2026 BG Wrapped</h1>
         <p className="subtitle">See your year in board games</p>
 
         <form onSubmit={handleSubmit} className="input-form">

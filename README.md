@@ -1,4 +1,4 @@
-# 2025 BG Wrapped
+# 2026 BG Wrapped
 
 A polished, data-driven year-in-review experience for board game enthusiasts that turns a BoardGameGeek (BGG) profile into a shareable storytelling experience.
 
@@ -64,7 +64,7 @@ GitHub: https://github.com/James-Wilkinson-git/bgg-app-backend
 The key API routes are:
 
 - GET /api/plays/:username
-  - Fetches a user's 2025 BGG plays, paginates through the BoardGameGeek XML API, normalizes each play entry, stores it in MongoDB, and supports optional refetch and BGA exclusion.
+  - Fetches a user's 2026 BGG plays, paginates through the BoardGameGeek XML API, normalizes each play entry, stores it in MongoDB, and supports optional refetch and BGA exclusion.
 
 - GET /api/analytics/:username/most-played
   - Aggregates play counts by game, computes top mechanics, categories, publishers, designers, and artists, and returns a structured payload ready for the wrapped experience.
@@ -73,7 +73,7 @@ The key API routes are:
   - Summarizes total plays, unique games, monthly activity, weighted average game age, and other high-level metrics for the player profile.
 
 - GET /api/analytics/popular-games
-  - Aggregates all 2025 plays across users to determine the most popular games in the broader community and returns thumbnails plus engagement counts.
+  - Aggregates all 2026 plays across users to determine the most popular games in the broader community and returns thumbnails plus engagement counts.
 
 - GET /api/bgg/collection/:username
   - Proxies BoardGameGeek's XML collection endpoint server-side so the app can avoid exposing the BGG API token in the frontend.
@@ -111,12 +111,15 @@ This is important for a portfolio because it shows awareness of how modern web a
 ## Key technical decisions
 
 ### 1. User-centric product experience
+
 The UI is designed to feel more like a year-end recap product than a traditional dashboard. I focused on pacing, visual hierarchy, and a “one card at a time” storytelling pattern that makes the experience feel premium and discoverable.
 
 ### 2. Robust data flow
+
 The app is built to handle a real-world challenge: BGG data may be missing, stale, or require a refresh. The logic includes fetch checks, analytics fallback paths, and refresh flows so the product remains resilient when data isn’t immediately available.
 
 ### 3. UI/UX as a differentiator
+
 The difference between a good data app and a memorable one is often the user experience. This project emphasizes clarity, motion, card transitions, and concise summaries that help users understand their habits without needing to read raw tables.
 
 ## Project structure
@@ -186,6 +189,6 @@ This project shows that I can:
 
 ## Summary
 
-2025 BG Wrapped is a portfolio-ready example of combining data, UX, backend integration, and deployment thinking into a product users can actually enjoy and share. It reflects the kind of work I enjoy building: interactive, user-focused, and grounded in real data.
+2026 BG Wrapped is a portfolio-ready example of combining data, UX, backend integration, and deployment thinking into a product users can actually enjoy and share. It reflects the kind of work I enjoy building: interactive, user-focused, and grounded in real data.
 
 The central story is not just that it looks polished—it is that the app successfully bridges a frontend experience with a backend data pipeline and a hosted deployment model. That makes it a stronger full-stack case study: a modern web app that turns messy external data into a meaningful, shareable user experience.
