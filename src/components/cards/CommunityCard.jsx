@@ -29,8 +29,8 @@ function CommunityCard({ games }) {
       <div className="card-content">
         <div className="card-header">
           <h2 className="year-label">✨ 2026 BG Wrapped ✨</h2>
-          <h1 className="card-title">🌍 User Favs 🌍</h1>
-          <p className="username">Global Plays Submitted</p>
+          <h1 className="card-title">🌍 Global Stats 🌍</h1>
+          <p className="username">Top Plays from the Community</p>
         </div>
         <div className="games-showcase">
           {games.slice(0, 10).map((game, index) => (
@@ -47,7 +47,8 @@ function CommunityCard({ games }) {
               <div className="game-card-content">
                 <div className="game-card-name">{game.gameName}</div>
                 <div className="game-card-plays">
-                  🎯 {game.playCount} plays • {game.playerCount} players
+                  🎯 {game.playCount} plays across {game.playerCount} different
+                  users
                 </div>
               </div>
             </div>
