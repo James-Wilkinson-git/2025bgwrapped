@@ -16,6 +16,10 @@ function ArtistsCard({ username, artists }) {
         </div>
 
         <div className="tags-container">
+          <div key="artist-header" className="tag-item">
+            <span className="tag-text">Artist</span>
+            <span className="tag-count"># of Plays</span>
+          </div>
           {topArtists.map((item, index) => (
             <div key={index} className="tag-item">
               <span className="tag-text">{item.artist}</span>
