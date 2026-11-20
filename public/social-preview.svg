@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#667eea"/>
+      <stop offset="0.5" stop-color="#764ba2"/>
+      <stop offset="1" stop-color="#4facfe"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="82%" cy="20%" r="52%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#09090b"/>
+  <rect x="0" y="0" width="1200" height="630" rx="32" fill="url(#background)"/>
+  <rect width="1200" height="630" rx="32" fill="url(#glow)"/>
+
+  <g transform="translate(760 82)">
+    <rect x="0" y="0" width="340" height="466" rx="28" fill="#111827" stroke="#ffffff" stroke-opacity="0.24" stroke-width="3"/>
+    <rect x="24" y="24" width="292" height="292" rx="22" fill="#ffffff" fill-opacity="0.96"/>
+    <g fill="#111827">
+      <circle cx="170" cy="82" r="23"/>
+      <circle cx="94" cy="170" r="23"/>
+      <circle cx="170" cy="170" r="23"/>
+      <circle cx="246" cy="170" r="23"/>
+      <circle cx="170" cy="258" r="23"/>
+    </g>
+    <text x="170" y="388" fill="#ffffff" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">2026</text>
+  </g>
+
+  <g transform="translate(92 88)">
+    <rect width="580" height="454" rx="30" fill="#09090b" fill-opacity="0.76" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+    <text x="48" y="86" fill="#dbeafe" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="2">YOUR YEAR IN BOARD GAMES</text>
+    <text x="48" y="190" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="82" font-weight="800">2026 BG</text>
+    <text x="48" y="278" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="82" font-weight="800">Wrapped</text>
+    <line x1="48" y1="318" x2="532" y2="318" stroke="#ffffff" stroke-opacity="0.22" stroke-width="2"/>
+    <text x="48" y="376" fill="#e2e8f0" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600">MOST PLAYED  •  TOP MECHANICS</text>
+    <text x="48" y="418" fill="#e2e8f0" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600">DESIGNERS  •  COMMUNITY</text>
+  </g>
+
+  <text x="92" y="588" fill="#ffffff" fill-opacity="0.86" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">bgwrapped.boardgaymesjames.com</text>
+</svg>
